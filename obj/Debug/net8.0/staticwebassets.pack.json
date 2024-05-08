@@ -1,0 +1,97 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Categories\\4ac6a383-c68c-4ba4-b8ec-b4bfdcb611c4.jpg",
+      "PackagePath": "staticwebassets\\Images\\Categories\\4ac6a383-c68c-4ba4-b8ec-b4bfdcb611c4.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Categories\\5c570067-d1c7-432d-be9f-36c2cc8fe9b0.jpg",
+      "PackagePath": "staticwebassets\\Images\\Categories\\5c570067-d1c7-432d-be9f-36c2cc8fe9b0.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Categories\\62ce6dc0-764e-41c3-8e15-0dc52fd68a0a.jpg",
+      "PackagePath": "staticwebassets\\Images\\Categories\\62ce6dc0-764e-41c3-8e15-0dc52fd68a0a.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Categories\\a3a53cfe-8c48-4088-983b-d1a771412605.jpg",
+      "PackagePath": "staticwebassets\\Images\\Categories\\a3a53cfe-8c48-4088-983b-d1a771412605.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Categories\\a750cba1-a19a-4abc-b9c4-42dafc212ae0.jpg",
+      "PackagePath": "staticwebassets\\Images\\Categories\\a750cba1-a19a-4abc-b9c4-42dafc212ae0.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Categories\\e9840121-406d-4a4e-83cf-8bd579ca911f.jpg",
+      "PackagePath": "staticwebassets\\Images\\Categories\\e9840121-406d-4a4e-83cf-8bd579ca911f.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\19868ec7-27b1-4035-b7b5-43f0847df673.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\19868ec7-27b1-4035-b7b5-43f0847df673.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\2d409227-3568-4d64-812e-e7960d9a9fc7.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\2d409227-3568-4d64-812e-e7960d9a9fc7.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\39312b6a-a2c7-4207-9314-ef44d9ac184c.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\39312b6a-a2c7-4207-9314-ef44d9ac184c.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\440ce738-9094-4185-b5c8-0eedd1a3bca2.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\440ce738-9094-4185-b5c8-0eedd1a3bca2.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\4699417d-a554-4165-bb6e-1622448ea3cb.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\4699417d-a554-4165-bb6e-1622448ea3cb.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\540ea35b-1044-4eed-a330-a9c1da050269.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\540ea35b-1044-4eed-a330-a9c1da050269.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\7b0bc322-a62b-4b15-9962-2098a882b7fa.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\7b0bc322-a62b-4b15-9962-2098a882b7fa.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\97e32b1b-b054-44f7-ab1d-8031d5de3eac.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\97e32b1b-b054-44f7-ab1d-8031d5de3eac.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\9d560469-f08b-4423-bcbc-0648089dc135.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\9d560469-f08b-4423-bcbc-0648089dc135.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\b0bc704a-274b-41f3-9369-6e3b7c2321f4.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\b0bc704a-274b-41f3-9369-6e3b7c2321f4.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\baf79e71-24ae-4941-9780-cce91edc45fe.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\baf79e71-24ae-4941-9780-cce91edc45fe.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\c0959b4d-2969-4da8-9532-924523446152.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\c0959b4d-2969-4da8-9532-924523446152.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\ec640431-cf5f-44d8-910b-1ee346807011.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\ec640431-cf5f-44d8-910b-1ee346807011.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.restaurant.props",
+      "PackagePath": "build\\restaurant.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.restaurant.props",
+      "PackagePath": "buildMultiTargeting\\restaurant.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.restaurant.props",
+      "PackagePath": "buildTransitive\\restaurant.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.restaurant.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
