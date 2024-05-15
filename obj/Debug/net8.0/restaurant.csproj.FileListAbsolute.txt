@@ -48,3 +48,4 @@ D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\Microsoft.
 D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\restaurant.staticwebassets.runtime.json
 D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\SixLabors.ImageSharp.dll
+D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\obj\Debug\net8.0\restaurant.sourcelink.json

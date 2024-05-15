@@ -29,6 +29,7 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@Price", model.Price);
                     cmd.Parameters.AddWithValue("@CategoriesName", model.CategoriesName);
                     cmd.Parameters.AddWithValue("@Description", model.Description);
+                    //cmd.Parameters.AddWithValue("@Rating", model.Rating);
                     int commaIndex = model.ImageBase64.IndexOf(',');
                     if (commaIndex >= 0)
                     {
@@ -76,6 +77,7 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@ID", model.ID);
                     cmd.Parameters.AddWithValue("@ItemName", model.ItemName);
                     cmd.Parameters.AddWithValue("@Price", model.Price);
+                    //cmd.Parameters.AddWithValue("@Rating", model.Rating);
                     cmd.Parameters.AddWithValue("@CategoriesName", model.CategoriesName);
                     cmd.Parameters.AddWithValue("@Description", model.Description);
                     if (model.ImageBase64 != null)
@@ -127,10 +129,12 @@ namespace restaurant.Repository
                         {
                             ID = Convert.ToInt32(reader["ID"]),
                             Price = Convert.ToInt32(reader["Price"]),
+                            //Rating = Convert.ToInt32(reader["Rating"]),
                             ItemName = reader["ItemName"].ToString(),
                             CategoriesName = reader["CategoriesName"].ToString(),
                             Description = reader["Description"].ToString(),
                             ImageURL = reader["ImageURL"].ToString(),
+                            Status = reader["Status"].ToString(),
                         };
                         ActiveCategoriesList.Add(isActive);
 
@@ -159,6 +163,7 @@ namespace restaurant.Repository
                         {
                             ID = Convert.ToInt32(reader["ID"]),
                             Price = Convert.ToInt32(reader["Price"]),
+                            //Rating = Convert.ToInt32(reader["Rating"]),
                             ItemName = reader["ItemName"].ToString(),
                             CategoriesName = reader["CategoriesName"].ToString(),
                             Description = reader["Description"].ToString(),

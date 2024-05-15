@@ -33,7 +33,7 @@ namespace restaurant.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<ActiveCategoriesItems>))]
         public IActionResult GetActiveActiveCategories()
         {
-            var TaskList = _mapper.Map<List<ActiveCategories>>(_categoriesItemsRepository.GetAllActiveCategoriesItemsData());
+            var TaskList = _mapper.Map<List<ActiveCategoriesItems>>(_categoriesItemsRepository.GetAllActiveCategoriesItemsData());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

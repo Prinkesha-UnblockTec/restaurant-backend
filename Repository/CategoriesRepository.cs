@@ -135,36 +135,12 @@ namespace restaurant.Repository
             }
             return true;
         }
-        //private string SaveBase64Image(string base64)
-        //{
-        //    string fileName = $"{Guid.NewGuid().ToString()}.jpg";
-        //    string FilePath = GetFilepath(fileName);
-        //    byte[] imageBytes = Convert.FromBase64String(base64);
-        //    File.WriteAllBytes(FilePath, imageBytes);
-        //    return "Images\\Categories\\" + fileName;
-        //}
         private string SaveBase64Image(string base64)
         {
             string fileName = $"{Guid.NewGuid().ToString()}.jpg";
-            string filePath = GetFilepath(fileName);
-
+            string FilePath = GetFilepath(fileName);
             byte[] imageBytes = Convert.FromBase64String(base64);
-
-            // Resize the image
-            using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes))
-            {
-                int targetWidth = 300;
-                int targetHeight = (int)((float)image.Height / image.Width * targetWidth);
-
-                image.Mutate(x => x.Resize(targetWidth, targetHeight));
-
-                // Save the resized image as JPEG with quality setting
-                using (FileStream output = File.Create(filePath))
-                {
-                    image.Save(output, new JpegEncoder { Quality = 90 });
-                }
-            }
-
+            File.WriteAllBytes(FilePath, imageBytes);
             return "Images\\Categories\\" + fileName;
         }
 
