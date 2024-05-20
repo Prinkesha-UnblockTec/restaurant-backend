@@ -17,6 +17,18 @@ namespace restaurant.Controllers
             _userCartFinalDetails = userCartFinalDetails;
             _mapper = mapper;
         }
+        [Route("GetOrdersInAdminData/{Id}")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OrdersAdmin>))]
+        public IActionResult GetOrdersInAdminData(int id)
+        {
+            var TaskList = _mapper.Map<List<OrdersAdmin>>(_userCartFinalDetails.GetOrdersInAdminData(id));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(new { List = TaskList, status = 1 });
+        }
         [Route("AddedUserCartData")]
         [HttpPost]
         [ProducesResponseType(204)]
@@ -99,13 +111,7 @@ namespace restaurant.Controllers
             {
                 return BadRequest("Invalid request. Username and password are required.");
             }
-
-            string address = _userCartFinalDetails.GetAddressByUsernamePassword(request.Username, request.Password);
-
-            if (string.IsNullOrEmpty(address))
-            {
-                return NotFound("Address not found for the provided username and password.");
-            }
+            var address = _userCartFinalDetails.GetAddressByUsernamePassword(request.Username, request.Password);
 
             return Ok(new { Address = address, Message = "Successfully retrieved address.", Status = 1 });
         }

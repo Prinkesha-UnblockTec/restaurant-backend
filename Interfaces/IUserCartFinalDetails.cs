@@ -6,9 +6,10 @@ namespace restaurant.Interfaces
     {
         ICollection<Items> GetUserCartProductsByTableName(ItemDataBseOnUser user);
         ICollection<AllCartItems> GetAllCartItems();
+        ICollection<OrdersAdmin> GetOrdersInAdminData(int ID);
         bool UpdateParticularUserStatus(UpdateStatusUserCart model);
         bool AddedUserCartList(UserCartFinalDetails.CartDetails model);
-        string GetAddressByUsernamePassword(string username, string password);
+        ICollection<DeliveryAddress> GetAddressByUsernamePassword(string username, string password);
         //string? GetAddressByUsernamePassword(UserNameandPassword model);
     }
 }

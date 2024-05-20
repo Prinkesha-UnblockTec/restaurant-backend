@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Data.Common;
 using System.Net;
+using static restaurant.Models.UserCartFinalDetails;
 
 namespace restaurant.Repository
 {
@@ -28,6 +29,9 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@UserName", model.Username);
                     cmd.Parameters.AddWithValue("@Password", model.Password);
                     cmd.Parameters.AddWithValue("@Address", model.Address);
+                    cmd.Parameters.AddWithValue("@City", model.City);
+                    cmd.Parameters.AddWithValue("@State", model.State);
+                    cmd.Parameters.AddWithValue("@PinCode", model.PinCode);
                     cmd.Parameters.AddWithValue("@TabelName", model.TabelName);
                     cmd.Parameters.AddWithValue("@Date", model.Date);
                     SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int);
@@ -84,6 +88,7 @@ namespace restaurant.Repository
                         while (reader.Read())
                         {
                             Items product = new Items();
+                            product.Id = reader.GetInt32(reader.GetOrdinal("ID"));
                             product.Date = reader["Date"].ToString();
                             product.Status = reader["Status"].ToString();
                             product.Price = reader.GetInt32(reader.GetOrdinal("TotalPrice"));
@@ -97,6 +102,44 @@ namespace restaurant.Repository
 
             return products;
         }
+
+        public ICollection<OrdersAdmin> GetOrdersInAdminData(int ID)
+        {
+            List<OrdersAdmin> products = new List<OrdersAdmin>();
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetOrdersInAdmin", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CartId",ID);
+
+                    connection.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            OrdersAdmin product = new OrdersAdmin();
+                            product.Id = reader.GetInt32(reader.GetOrdinal("ID"));
+                            product.Date = reader["Date"].ToString();
+                            product.ImageURL = reader["ImageURL"].ToString();
+                            product.ItemName = reader["ItemName"].ToString();
+                            product.CategoriesName = reader["CategoriesName"].ToString();
+                            product.Description = reader["Description"].ToString();
+                            product.Price = reader.GetInt32(reader.GetOrdinal("Price"));
+                            product.Quantity = reader.GetInt32(reader.GetOrdinal("Quantity"));
+
+                            products.Add(product);
+                        }
+                    }
+                }
+            }
+
+            return products;
+        }
+
+
         public ICollection<AllCartItems> GetAllCartItems()
         {
             List<AllCartItems> products = new List<AllCartItems>();
@@ -116,6 +159,7 @@ namespace restaurant.Repository
                     while (reader.Read())
                     {
                         AllCartItems product = new AllCartItems();
+                        product.Id = reader.GetInt32(reader.GetOrdinal("ID"));
                         product.Date = reader["Date"].ToString();
                         product.UserName = reader["UserName"].ToString();
                         product.Password = reader["Password"].ToString();
@@ -140,6 +184,7 @@ namespace restaurant.Repository
                 using (SqlCommand cmd = new SqlCommand("UpdateStatusByUsernamePasswordTableName", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", model.Id);
                     cmd.Parameters.AddWithValue("@Username", model.UserName);
                     cmd.Parameters.AddWithValue("@Password", model.Password);
                     cmd.Parameters.AddWithValue("@Status", model.Status);
@@ -151,9 +196,9 @@ namespace restaurant.Repository
             }
             return true;
         }
-        public string GetAddressByUsernamePassword(string username, string password)
+        public ICollection<DeliveryAddress> GetAddressByUsernamePassword(string username, string password)
         {
-            string address = null;
+            List<DeliveryAddress> addresArray = new List<DeliveryAddress>();
 
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -170,12 +215,19 @@ namespace restaurant.Repository
                 {
                     if (reader.Read())
                     {
-                        address = reader["Address"].ToString();
+                        DeliveryAddress item = new DeliveryAddress();
+                        item.Address = reader["Address"].ToString();
+                        item.State = reader["State"].ToString();
+                        item.City = reader["City"].ToString();
+                        item.PinCode = reader.GetInt32(reader.GetOrdinal("PinCode"));
+
+
+                        addresArray.Add(item);
                     }
                 }
             }
 
-            return address;
+            return addresArray;
         }
 
 
