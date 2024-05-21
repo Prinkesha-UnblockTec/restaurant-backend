@@ -52,6 +52,29 @@ namespace restaurant.Controllers
             }
             return BadRequest("TaskList Already Exist");
         }
+        [Route("AddedUserCartSetDefultAddress")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult AddNewAddress([FromBody] UserCartFinalDetails.CartDetails newList)
+        {
+            if (newList == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var CreateList = _mapper.Map<UserCartFinalDetails.CartDetails>(newList);
+            if (_userCartFinalDetails.AddedDifferentUserCartList(CreateList))
+            {
+                return Ok(new { Message = "Successfully Created", status = 1 });
+            }
+            return BadRequest("TaskList Already Exist");
+        }
         [HttpPost("GetItemDataBseOnUser")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemDataBseOnUser>))]
         public IActionResult GetUserCartProductsByTableName([FromBody]  ItemDataBseOnUser user)
@@ -112,6 +135,20 @@ namespace restaurant.Controllers
                 return BadRequest("Invalid request. Username and password are required.");
             }
             var address = _userCartFinalDetails.GetAddressByUsernamePassword(request.Username, request.Password);
+
+            return Ok(new { Address = address, Message = "Successfully retrieved address.", Status = 1 });
+        }
+        [Route("GetAddressByOrderId")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult GetAddressByOrderId([FromBody] Address request)
+        {
+            if (request == null || request.ID == null)
+            {
+                return BadRequest("Invalid request. Username and password are required.");
+            }
+            var address = _userCartFinalDetails.GetAddressByOrderId(request.ID);
 
             return Ok(new { Address = address, Message = "Successfully retrieved address.", Status = 1 });
         }

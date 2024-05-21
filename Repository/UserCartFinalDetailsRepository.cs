@@ -17,13 +17,13 @@ namespace restaurant.Repository
             _configuration = configuration;
         }
 
-        public bool AddedUserCartList(UserCartFinalDetails.CartDetails model)
+        public bool AddedDifferentUserCartList(UserCartFinalDetails.CartDetails model)
         {
             int newUserId;
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("AddedUserDetails", con))
+                using (SqlCommand cmd = new SqlCommand("addedCartUserDefultAddress", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UserName", model.Username);
@@ -34,6 +34,60 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@PinCode", model.PinCode);
                     cmd.Parameters.AddWithValue("@TabelName", model.TabelName);
                     cmd.Parameters.AddWithValue("@Date", model.Date);
+                    cmd.Parameters.AddWithValue("@DeliveryName", model.DeliverName);
+                    SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int);
+                    outputIdParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputIdParam);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+
+                    newUserId = Convert.ToInt32(outputIdParam.Value);
+
+                }
+                foreach (var product in model.Products)
+                {
+                    string? connectionStrings = _configuration.GetConnectionString("DefaultConnection");
+                    using (SqlConnection connection = new SqlConnection(connectionStrings))
+                    {
+                        using (SqlCommand cmd = new SqlCommand("AddedItemsDetails", connection))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@CartId", newUserId);
+                            cmd.Parameters.AddWithValue("@UserCartId", model.Username);
+                            cmd.Parameters.AddWithValue("@Date", model.Date);
+                            cmd.Parameters.AddWithValue("@ItemName", product.ItemName);
+                            cmd.Parameters.AddWithValue("@Price", product.Price);
+                            cmd.Parameters.AddWithValue("@CategoriesName", product.CategoriesName);
+                            cmd.Parameters.AddWithValue("@Description", product.Description);
+                            cmd.Parameters.AddWithValue("@ImageURL", product.ImageURL);
+                            cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
+                            connection.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        public bool AddedUserCartList(UserCartFinalDetails.CartDetails model)
+        {
+            int newUserId;
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("addedCartUserDefultAddress", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserName", model.Username);
+                    cmd.Parameters.AddWithValue("@Password", model.Password);
+                    cmd.Parameters.AddWithValue("@Address", model.Address);
+                    cmd.Parameters.AddWithValue("@City", model.City);
+                    cmd.Parameters.AddWithValue("@State", model.State);
+                    cmd.Parameters.AddWithValue("@PinCode", model.PinCode);
+                    cmd.Parameters.AddWithValue("@TabelName", model.TabelName);
+                    cmd.Parameters.AddWithValue("@Date", model.Date);
+                    cmd.Parameters.AddWithValue("@DeliveryName", model.DeliverName);
                     SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int);
                     outputIdParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(outputIdParam);
@@ -90,6 +144,8 @@ namespace restaurant.Repository
                             Items product = new Items();
                             product.Id = reader.GetInt32(reader.GetOrdinal("ID"));
                             product.Date = reader["Date"].ToString();
+                            product.UserName = reader["Username"].ToString();
+                            product.Password = reader["Password"].ToString();
                             product.Status = reader["Status"].ToString();
                             product.Price = reader.GetInt32(reader.GetOrdinal("TotalPrice"));
                             product.Quantity = reader.GetInt32(reader.GetOrdinal("TotalQuantity"));
@@ -216,12 +272,43 @@ namespace restaurant.Repository
                     if (reader.Read())
                     {
                         DeliveryAddress item = new DeliveryAddress();
-                        item.Address = reader["Address"].ToString();
-                        item.State = reader["State"].ToString();
-                        item.City = reader["City"].ToString();
-                        item.PinCode = reader.GetInt32(reader.GetOrdinal("PinCode"));
+                        item.Address = reader["Address"] != DBNull.Value ? reader["Address"].ToString() : string.Empty;
+                        item.State = reader["State"] != DBNull.Value ? reader["State"].ToString() : string.Empty;
+                        item.City = reader["City"] != DBNull.Value ? reader["City"].ToString() : string.Empty;
+                        item.PinCode = reader["PinCode"] != DBNull.Value ? reader.GetInt32(reader.GetOrdinal("PinCode")) : 0;
+                        item.DeliveryName = reader["DeliveryName"] != DBNull.Value ? reader["DeliveryName"].ToString() : string.Empty;
+                        addresArray.Add(item);
+                    }
+                }
+            }
 
+            return addresArray;
+        }
 
+        public ICollection<DeliveryAddress> GetAddressByOrderId(int Id)
+        {
+            List<DeliveryAddress> addresArray = new List<DeliveryAddress>();
+
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetAddressByOrderId", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@Id", Id));
+
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        DeliveryAddress item = new DeliveryAddress();
+                        item.Address = reader["Address"] != DBNull.Value ? reader["Address"].ToString() : string.Empty;
+                        item.State = reader["State"] != DBNull.Value ? reader["State"].ToString() : string.Empty;
+                        item.City = reader["City"] != DBNull.Value ? reader["City"].ToString() : string.Empty;
+                        item.PinCode = reader["PinCode"] != DBNull.Value ? reader.GetInt32(reader.GetOrdinal("PinCode")) : 0;
+                        item.DeliveryName = reader["DeliveryName"] != DBNull.Value ? reader["DeliveryName"].ToString() : string.Empty;
                         addresArray.Add(item);
                     }
                 }

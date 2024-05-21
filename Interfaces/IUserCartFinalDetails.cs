@@ -9,7 +9,9 @@ namespace restaurant.Interfaces
         ICollection<OrdersAdmin> GetOrdersInAdminData(int ID);
         bool UpdateParticularUserStatus(UpdateStatusUserCart model);
         bool AddedUserCartList(UserCartFinalDetails.CartDetails model);
+        bool AddedDifferentUserCartList(UserCartFinalDetails.CartDetails model);
         ICollection<DeliveryAddress> GetAddressByUsernamePassword(string username, string password);
+        ICollection<DeliveryAddress> GetAddressByOrderId(int id);
         //string? GetAddressByUsernamePassword(UserNameandPassword model);
     }
 }
