@@ -29,7 +29,7 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@Price", model.Price);
                     cmd.Parameters.AddWithValue("@CategoriesName", model.CategoriesName);
                     cmd.Parameters.AddWithValue("@Description", model.Description);
-                    //cmd.Parameters.AddWithValue("@Rating", model.Rating);
+                    cmd.Parameters.AddWithValue("@BalanceQuantity", model.BalanceQuantity);
                     int commaIndex = model.ImageBase64.IndexOf(',');
                     if (commaIndex >= 0)
                     {
@@ -77,7 +77,7 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@ID", model.ID);
                     cmd.Parameters.AddWithValue("@ItemName", model.ItemName);
                     cmd.Parameters.AddWithValue("@Price", model.Price);
-                    //cmd.Parameters.AddWithValue("@Rating", model.Rating);
+                    cmd.Parameters.AddWithValue("@BalanceQuantity", model.BalanceQuantity);
                     cmd.Parameters.AddWithValue("@CategoriesName", model.CategoriesName);
                     cmd.Parameters.AddWithValue("@Description", model.Description);
                     if (model.ImageBase64 != null)
@@ -129,12 +129,15 @@ namespace restaurant.Repository
                         {
                             ID = Convert.ToInt32(reader["ID"]),
                             Price = Convert.ToInt32(reader["Price"]),
-                            //Rating = Convert.ToInt32(reader["Rating"]),
+                            BalanceQuantity = Convert.ToInt32(reader["BalanceQuantity"]),
                             ItemName = reader["ItemName"].ToString(),
                             CategoriesName = reader["CategoriesName"].ToString(),
                             Description = reader["Description"].ToString(),
                             ImageURL = reader["ImageURL"].ToString(),
                             Status = reader["Status"].ToString(),
+                            Calculation = reader["Calculation"] != DBNull.Value ? reader["Calculation"].ToString() : string.Empty,
+                            OriginalQuantity = reader["BalanceQuantity"] != DBNull.Value ? reader.GetInt32(reader.GetOrdinal("BalanceQuantity")) : 0,
+
                         };
                         ActiveCategoriesList.Add(isActive);
 
@@ -163,12 +166,15 @@ namespace restaurant.Repository
                         {
                             ID = Convert.ToInt32(reader["ID"]),
                             Price = Convert.ToInt32(reader["Price"]),
-                            //Rating = Convert.ToInt32(reader["Rating"]),
+                            BalanceQuantity = reader["BalanceQuantity"] != DBNull.Value ? reader.GetInt32(reader.GetOrdinal("BalanceQuantity")) : 0,
                             ItemName = reader["ItemName"].ToString(),
                             CategoriesName = reader["CategoriesName"].ToString(),
                             Description = reader["Description"].ToString(),
                             ImageURL = reader["ImageURL"].ToString(),
                             Status = reader["Status"].ToString(),
+                            Calculation = reader["Calculation"] != DBNull.Value ? reader["Calculation"].ToString() : string.Empty,
+                            OriginalQuantity = reader["BalanceQuantity"] != DBNull.Value ? reader.GetInt32(reader.GetOrdinal("BalanceQuantity")) : 0,
+
                         };
                         CategoriesList.Add(item);
 
@@ -176,6 +182,49 @@ namespace restaurant.Repository
                 }
             }
             return CategoriesList;
+        }
+
+        public bool EditUpdateBalanceQuantityList(List<UpdateBalanceQuantity> ItemsArray)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                foreach (var product in ItemsArray)
+                {
+                    using (SqlCommand cmd = new SqlCommand("UpdateBalanceQuantity", con))
+                    {
+                        try
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@ItemId", product.ItemId);
+                            cmd.Parameters.AddWithValue("@NewStock", product.NewStock);
+                            cmd.ExecuteNonQuery();
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        public bool UpdateCalculationItems(UpdateCalculation model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdateCalculationItems", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ID", model.Id);
+                    cmd.Parameters.AddWithValue("@Calculation", model.Calculation);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
         }
     }
 }

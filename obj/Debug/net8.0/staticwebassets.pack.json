@@ -109,6 +109,10 @@
       "PackagePath": "staticwebassets\\Images\\Items\\1bb0fa2c-82c3-48b8-97a6-aaf997aa5d12.jpg"
     },
     {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\1ee429fb-3231-4390-8266-d5c5c52b1e0a.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\1ee429fb-3231-4390-8266-d5c5c52b1e0a.jpg"
+    },
+    {
       "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\23695afb-2fc4-498f-902f-528dd45b3344.jpg",
       "PackagePath": "staticwebassets\\Images\\Items\\23695afb-2fc4-498f-902f-528dd45b3344.jpg"
     },
@@ -217,8 +221,16 @@
       "PackagePath": "staticwebassets\\Images\\Items\\9ee4e369-ccaf-4d5d-b9d2-e3adbc5a63f9.jpg"
     },
     {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\ab6db331-6633-48c7-be69-77ef4307631e.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\ab6db331-6633-48c7-be69-77ef4307631e.jpg"
+    },
+    {
       "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\b0bc704a-274b-41f3-9369-6e3b7c2321f4.jpg",
       "PackagePath": "staticwebassets\\Images\\Items\\b0bc704a-274b-41f3-9369-6e3b7c2321f4.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\b8ea29da-0529-4447-a60a-1376b1b98d29.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\b8ea29da-0529-4447-a60a-1376b1b98d29.jpg"
     },
     {
       "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\baf79e71-24ae-4941-9780-cce91edc45fe.jpg",
@@ -239,6 +251,10 @@
     {
       "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\e2841db2-8c98-4634-8812-40c9af9a1805.jpg",
       "PackagePath": "staticwebassets\\Images\\Items\\e2841db2-8c98-4634-8812-40c9af9a1805.jpg"
+    },
+    {
+      "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\e49d18c2-b3e1-49d9-805f-43bb1748f64c.jpg",
+      "PackagePath": "staticwebassets\\Images\\Items\\e49d18c2-b3e1-49d9-805f-43bb1748f64c.jpg"
     },
     {
       "Id": "D:\\ASP.NET(CORE)\\demo-practics\\restaurant\\restaurant\\wwwroot\\Images\\Items\\ec640431-cf5f-44d8-910b-1ee346807011.jpg",

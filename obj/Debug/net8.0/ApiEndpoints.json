@@ -350,6 +350,37 @@
   },
   {
     "ContainingType": "restaurant.Controllers.CategoriesItemsController",
+    "Method": "EditUpdateBalanceQuantityList",
+    "RelativePath": "api/CategoriesItems/EditUpdateBalanceQuantityList",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Categories",
+        "Type": "System.Collections.Generic.List\u00601[[restaurant.Models.UpdateBalanceQuantity, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.CategoriesItemsController",
     "Method": "GetActiveActiveCategories",
     "RelativePath": "api/CategoriesItems/GetAllActiveCategoriesItemsData",
     "HttpMethod": "GET",
@@ -385,6 +416,37 @@
           "text/json"
         ],
         "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.CategoriesItemsController",
+    "Method": "UpdateCalculationItems",
+    "RelativePath": "api/CategoriesItems/UpdateCalculationItems",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newList",
+        "Type": "restaurant.Models.UpdateCalculation",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
       }
     ]
   },

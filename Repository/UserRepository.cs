@@ -35,6 +35,7 @@ namespace restaurant.Repository
                             RoleID = Convert.ToInt32(reader["RoleID"]),
                             RoleName = reader["RoleName"].ToString(),
                             Password = reader["Password"].ToString(),
+                            Status = reader["Status"].ToString(),
                         };
                         UserList.Add(Users);
 
@@ -55,6 +56,7 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@Password", model.Password);
                     cmd.Parameters.AddWithValue("@RoleID", model.RoleID);
                     cmd.Parameters.AddWithValue("@RoleName", model.RoleName);
+                    cmd.Parameters.AddWithValue("@Status", model.Status);
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }
@@ -74,6 +76,7 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@Password", model.Password);
                     cmd.Parameters.AddWithValue("@RoleID", model.RoleID);
                     cmd.Parameters.AddWithValue("@RoleName", model.RoleName);
+                    cmd.Parameters.AddWithValue("@Status", model.Status);
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }

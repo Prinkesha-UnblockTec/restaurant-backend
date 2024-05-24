@@ -62,6 +62,28 @@ namespace restaurant.Controllers
             }
             return BadRequest("TaskList Already Exist");
         }
+        [Route("UpdateCalculationItems")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateCalculationItems([FromBody] UpdateCalculation newList)
+        {
+            if (newList == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (_categoriesItemsRepository.UpdateCalculationItems(newList))
+            {
+                return Ok(new { Message = "Successfully Created", status = 1 });
+            }
+            return BadRequest("TaskList Already Exist");
+        }
         [Route("EditCategoriesItemsList")]
         [HttpPost]
         [ProducesResponseType(204)]
@@ -83,6 +105,28 @@ namespace restaurant.Controllers
                 return Ok(new { Message = "Successfully Updated", status = 1 });
             }
             return BadRequest("This Categories Name is Already Exist");
+        }
+        [Route("EditUpdateBalanceQuantityList")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult EditUpdateBalanceQuantityList([FromBody] List<UpdateBalanceQuantity> Categories)
+        {
+            if (Categories == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var UpdateListData = _mapper.Map<List<UpdateBalanceQuantity>>(Categories);
+            if (_categoriesItemsRepository.EditUpdateBalanceQuantityList(UpdateListData))
+            {
+                return Ok(new { Message = "Successfully Updated", status = 1 });
+            }
+            return BadRequest("This UpdateBalance Quantity is Already Exist");
         }
         [HttpDelete("DeleteCategoriesItem/{Id}")]
         [ProducesResponseType(400)]
