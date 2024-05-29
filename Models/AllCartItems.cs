@@ -8,7 +8,7 @@
         public int Price { get; set; }
         public string? Status { get; set; }
         public string? Date { get; set; }
-        public string? Password { get; set; }
-        public string? TabelName { get; set; }
+        public string? Time { get; set; }
+        public string? Currency { get; set; }
     }
 }

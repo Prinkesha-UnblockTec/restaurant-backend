@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Net;
 using static restaurant.Models.UserCartFinalDetails;
+using System.Transactions;
 
 namespace restaurant.Repository
 {
@@ -17,93 +18,115 @@ namespace restaurant.Repository
             _configuration = configuration;
         }
 
-        public bool AddedDifferentUserCartList(UserCartFinalDetails.CartDetails model)
-        {
-            int newUserId;
-            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand("addedCartUserDefultAddress", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UserName", model.Username);
-                    cmd.Parameters.AddWithValue("@Password", model.Password);
-                    cmd.Parameters.AddWithValue("@Address", model.Address);
-                    cmd.Parameters.AddWithValue("@City", model.City);
-                    cmd.Parameters.AddWithValue("@State", model.State);
-                    cmd.Parameters.AddWithValue("@PinCode", model.PinCode);
-                    cmd.Parameters.AddWithValue("@TabelName", model.TabelName);
-                    cmd.Parameters.AddWithValue("@Date", model.Date);
-                    cmd.Parameters.AddWithValue("@DeliveryName", model.DeliverName);
-                    SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int);
-                    outputIdParam.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(outputIdParam);
+        //public bool AddedUserCartList(UserCartFinalDetails.CartDetails model)
+        //{
+        //    int newUserId;
+        //    string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+        //    using (SqlConnection con = new SqlConnection(connectionString))
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand("addedCartUserDefultAddress", con))
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("@LoginId", model.LoginId);
+        //            cmd.Parameters.AddWithValue("@UserName", model.Username);
+        //            cmd.Parameters.AddWithValue("@Address", model.Address);
+        //            cmd.Parameters.AddWithValue("@City", model.City);
+        //            cmd.Parameters.AddWithValue("@State", model.State);
+        //            cmd.Parameters.AddWithValue("@PinCode", model.PinCode);
+        //            cmd.Parameters.AddWithValue("@Time", model.Time);
+        //            cmd.Parameters.AddWithValue("@Currency", model.Currency);
+        //            cmd.Parameters.AddWithValue("@Date", model.Date);
+        //            cmd.Parameters.AddWithValue("@DeliveryName", model.DeliverName);
+        //            SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int);
+        //            outputIdParam.Direction = ParameterDirection.Output;
+        //            cmd.Parameters.Add(outputIdParam);
 
-                    con.Open();
-                    cmd.ExecuteNonQuery();
+        //            con.Open();
+        //            cmd.ExecuteNonQuery();
 
-                    newUserId = Convert.ToInt32(outputIdParam.Value);
+        //            newUserId = Convert.ToInt32(outputIdParam.Value);
 
-                }
-                foreach (var product in model.Products)
-                {
-                    string? connectionStrings = _configuration.GetConnectionString("DefaultConnection");
-                    using (SqlConnection connection = new SqlConnection(connectionStrings))
-                    {
-                        using (SqlCommand cmd = new SqlCommand("AddedItemsDetails", connection))
-                        {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@CartId", newUserId);
-                            cmd.Parameters.AddWithValue("@UserCartId", model.Username);
-                            cmd.Parameters.AddWithValue("@Date", model.Date);
-                            cmd.Parameters.AddWithValue("@ItemName", product.ItemName);
-                            cmd.Parameters.AddWithValue("@Price", product.Price);
-                            cmd.Parameters.AddWithValue("@CategoriesName", product.CategoriesName);
-                            cmd.Parameters.AddWithValue("@Description", product.Description);
-                            cmd.Parameters.AddWithValue("@ImageURL", product.ImageURL);
-                            cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
-                            connection.Open();
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
-            }
-            return true;
-        }
+        //        }
+        //        using (SqlCommand cmd = new SqlCommand("LogStatusChange", con, transaction))
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("@CartId", newUserId);
+        //            cmd.Parameters.AddWithValue("@Status", "Pending");
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //        foreach (var product in model.Products)
+        //        {
+        //            string? connectionStrings = _configuration.GetConnectionString("DefaultConnection");
+        //            using (SqlConnection connection = new SqlConnection(connectionStrings))
+        //            {
+        //                using (SqlCommand cmd = new SqlCommand("AddedItemsDetails", connection))
+        //                {
+        //                    cmd.CommandType = CommandType.StoredProcedure;
+        //                    cmd.Parameters.AddWithValue("@CartId", newUserId);
+        //                    cmd.Parameters.AddWithValue("@UserCartId", model.Username);
+        //                    cmd.Parameters.AddWithValue("@Date", model.Date);
+        //                    cmd.Parameters.AddWithValue("@ItemName", product.ItemName);
+        //                    cmd.Parameters.AddWithValue("@Price", product.Price);
+        //                    cmd.Parameters.AddWithValue("@CategoriesName", product.CategoriesName);
+        //                    cmd.Parameters.AddWithValue("@Description", product.Description);
+        //                    cmd.Parameters.AddWithValue("@Currency", model.Currency);
+        //                    cmd.Parameters.AddWithValue("@ImageURL", product.ImageURL);
+        //                    cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
+        //                    connection.Open();
+        //                    cmd.ExecuteNonQuery();
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return true;
+        //}
+
         public bool AddedUserCartList(UserCartFinalDetails.CartDetails model)
         {
             int newUserId;
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("addedCartUserDefultAddress", con))
+                con.Open();
+                using (SqlTransaction transaction = con.BeginTransaction())
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UserName", model.Username);
-                    cmd.Parameters.AddWithValue("@Password", model.Password);
-                    cmd.Parameters.AddWithValue("@Address", model.Address);
-                    cmd.Parameters.AddWithValue("@City", model.City);
-                    cmd.Parameters.AddWithValue("@State", model.State);
-                    cmd.Parameters.AddWithValue("@PinCode", model.PinCode);
-                    cmd.Parameters.AddWithValue("@TabelName", model.TabelName);
-                    cmd.Parameters.AddWithValue("@Date", model.Date);
-                    cmd.Parameters.AddWithValue("@DeliveryName", model.DeliverName);
-                    SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int);
-                    outputIdParam.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(outputIdParam);
-
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-
-                    newUserId = Convert.ToInt32(outputIdParam.Value);
-
-                }
-                foreach (var product in model.Products)
-                {
-                    string? connectionStrings = _configuration.GetConnectionString("DefaultConnection");
-                    using (SqlConnection connection = new SqlConnection(connectionStrings))
+                    // Add user cart details
+                    using (SqlCommand cmd = new SqlCommand("addedCartUserDefultAddress", con, transaction))
                     {
-                        using (SqlCommand cmd = new SqlCommand("AddedItemsDetails", connection))
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@LoginId", model.LoginId);
+                        cmd.Parameters.AddWithValue("@UserName", model.Username);
+                        cmd.Parameters.AddWithValue("@Address", model.Address);
+                        cmd.Parameters.AddWithValue("@City", model.City);
+                        cmd.Parameters.AddWithValue("@State", model.State);
+                        cmd.Parameters.AddWithValue("@PinCode", model.PinCode);
+                        cmd.Parameters.AddWithValue("@Time", model.Time);
+                        cmd.Parameters.AddWithValue("@Currency", model.Currency);
+                        cmd.Parameters.AddWithValue("@Date", model.Date);
+                        cmd.Parameters.AddWithValue("@DeliveryName", model.DeliverName);
+                        SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        cmd.Parameters.Add(outputIdParam);
+                        cmd.ExecuteNonQuery();
+                        newUserId = Convert.ToInt32(outputIdParam.Value);
+                    }
+
+                    // Log status change for the new user cart
+                    using (SqlCommand cmd = new SqlCommand("LogStatusChange", con, transaction))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@CartId", newUserId);
+                        cmd.Parameters.AddWithValue("@Status", "Pending");
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Add each product to the cart
+                    foreach (var product in model.Products)
+                    {
+                        using (SqlCommand cmd = new SqlCommand("AddedItemsDetails", con, transaction))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@CartId", newUserId);
@@ -113,16 +136,19 @@ namespace restaurant.Repository
                             cmd.Parameters.AddWithValue("@Price", product.Price);
                             cmd.Parameters.AddWithValue("@CategoriesName", product.CategoriesName);
                             cmd.Parameters.AddWithValue("@Description", product.Description);
+                            cmd.Parameters.AddWithValue("@Currency", model.Currency);
                             cmd.Parameters.AddWithValue("@ImageURL", product.ImageURL);
                             cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
-                            connection.Open();
                             cmd.ExecuteNonQuery();
                         }
                     }
+
+                    transaction.Commit();
                 }
             }
             return true;
         }
+
         public ICollection<Items> GetUserCartProductsByTableName(ItemDataBseOnUser user)
         {
             List<Items> products = new List<Items>();
@@ -133,8 +159,7 @@ namespace restaurant.Repository
                 using (SqlCommand cmd = new SqlCommand("GetUserCartProductsByTableName", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@cartId", user.cartId);
-                    cmd.Parameters.AddWithValue("@tableName", user.tableName);
+                    cmd.Parameters.AddWithValue("@LoginId", user.loginId);
 
                     connection.Open();
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -143,9 +168,11 @@ namespace restaurant.Repository
                         {
                             Items product = new Items();
                             product.Id = reader.GetInt32(reader.GetOrdinal("ID"));
+                            product.LoginId = reader.GetInt32(reader.GetOrdinal("LoginId"));
                             product.Date = reader["Date"].ToString();
+                            product.Time = reader["Time"].ToString();
                             product.UserName = reader["Username"].ToString();
-                            product.Password = reader["Password"].ToString();
+                            product.Currency = reader["Currency"].ToString();
                             product.Status = reader["Status"].ToString();
                             product.Price = reader.GetInt32(reader.GetOrdinal("TotalPrice"));
                             product.Quantity = reader.GetInt32(reader.GetOrdinal("TotalQuantity"));
@@ -183,6 +210,7 @@ namespace restaurant.Repository
                             product.ItemName = reader["ItemName"].ToString();
                             product.CategoriesName = reader["CategoriesName"].ToString();
                             product.Description = reader["Description"].ToString();
+                            product.Currency = reader["Currency"].ToString();
                             product.Price = reader.GetInt32(reader.GetOrdinal("Price"));
                             product.Quantity = reader.GetInt32(reader.GetOrdinal("Quantity"));
 
@@ -218,9 +246,9 @@ namespace restaurant.Repository
                         product.Id = reader.GetInt32(reader.GetOrdinal("ID"));
                         product.Date = reader["Date"].ToString();
                         product.UserName = reader["UserName"].ToString();
-                        product.Password = reader["Password"].ToString();
+                        product.Time = reader["Time"].ToString();
                         product.Status = reader["Status"].ToString();
-                        product.TabelName = reader["TabelName"].ToString();
+                        product.Currency = reader["Currency"].ToString();
                         product.Price = reader.GetInt32(reader.GetOrdinal("TotalPrice"));
                         product.Quantity = reader.GetInt32(reader.GetOrdinal("TotalQuantity"));
 
@@ -241,11 +269,7 @@ namespace restaurant.Repository
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Id", model.Id);
-                    cmd.Parameters.AddWithValue("@Username", model.UserName);
-                    cmd.Parameters.AddWithValue("@Password", model.Password);
                     cmd.Parameters.AddWithValue("@Status", model.Status);
-                    cmd.Parameters.AddWithValue("@TabelName", model.TabelName);
-                    cmd.Parameters.AddWithValue("@Date", model.Date);
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }
@@ -317,6 +341,74 @@ namespace restaurant.Repository
             return addresArray;
         }
 
+        public string GetStatusUser(int id)
+        {
+            string Status = "";
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetStatusUsers", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ID", id));
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        Status = reader["Status"].ToString();
+                    }
+                }
+            }
+            return Status;
+        }
 
+        public bool StoreSatausData(StoreSatausData model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("LogStatusChange", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CartId", model.ID);
+                    cmd.Parameters.AddWithValue("@Status", model.Status);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+
+        public ICollection<StoreSatausData> GetStoreSatausData(int ID)
+        {
+            var StatusList = new List<StoreSatausData>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetLogStatusChange", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CartId", ID));
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        StoreSatausData item = new StoreSatausData
+                        {
+                            ID = Convert.ToInt32(reader["CartId"]),
+                            Status = reader["Status"].ToString(),
+                            DateTime = Convert.ToDateTime(reader["DateTime"])
+                        };
+                        StatusList.Add(item);
+
+                    }
+                }
+            }
+            return StatusList;
+        }
     }
 }

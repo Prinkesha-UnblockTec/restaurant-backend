@@ -52,30 +52,7 @@ namespace restaurant.Controllers
             }
             return BadRequest("TaskList Already Exist");
         }
-        [Route("AddedUserCartSetDefultAddress")]
-        [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        public IActionResult AddNewAddress([FromBody] UserCartFinalDetails.CartDetails newList)
-        {
-            if (newList == null)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var CreateList = _mapper.Map<UserCartFinalDetails.CartDetails>(newList);
-            if (_userCartFinalDetails.AddedDifferentUserCartList(CreateList))
-            {
-                return Ok(new { Message = "Successfully Created", status = 1 });
-            }
-            return BadRequest("TaskList Already Exist");
-        }
-        [HttpPost("GetItemDataBseOnUser")]
+              [HttpPost("GetItemDataBseOnUser")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemDataBseOnUser>))]
         public IActionResult GetUserCartProductsByTableName([FromBody]  ItemDataBseOnUser user)
         {
@@ -151,6 +128,63 @@ namespace restaurant.Controllers
             var address = _userCartFinalDetails.GetAddressByOrderId(request.ID);
 
             return Ok(new { Address = address, Message = "Successfully retrieved address.", Status = 1 });
+        }
+        [Route("GetStatusUser/{Id}")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(string))]
+        public IActionResult GetLoginId(int Id)
+        {
+            if (Id == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var TaskList = _userCartFinalDetails.GetStatusUser(Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(new { List = TaskList, status = 1 });
+        }
+        [Route("AddSatausData")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult AddSatausData([FromBody] StoreSatausData newList)
+        {
+            if (newList == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var CreateList = _mapper.Map<StoreSatausData>(newList);
+            if (_userCartFinalDetails.StoreSatausData(CreateList))
+            {
+                return Ok(new { Message = "Successfully Created", status = 1 });
+            }
+            return BadRequest("TaskList Already Exist");
+        }
+        [Route("GetSatausDataByCartId/{Id}")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<StoreSatausData>))]
+        public IActionResult GetStoreSatausData(int Id)
+        {
+            if (Id == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var TaskList = _userCartFinalDetails.GetStoreSatausData(Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(new { List = TaskList, status = 1 });
         }
     }
 }

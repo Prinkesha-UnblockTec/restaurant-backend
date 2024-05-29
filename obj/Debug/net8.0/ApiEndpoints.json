@@ -1,8 +1,74 @@
 [
   {
     "ContainingType": "restaurant.Controllers.AccountController",
+    "Method": "GetCurrecyAdmin",
+    "RelativePath": "api/Account/GetCurrency",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.AccountController",
+    "Method": "GetRole",
+    "RelativePath": "api/Account/GetDefaultRouting",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.UpdateRouting, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.AccountController",
     "Method": "GetLoginId",
-    "RelativePath": "api/Account/GetIdBaseOnUserandPassword",
+    "RelativePath": "api/Account/GetLoginUserDataBaseOnID/{Id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.User, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.AccountController",
+    "Method": "UserLogin",
+    "RelativePath": "api/Account/Login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -36,8 +102,8 @@
   },
   {
     "ContainingType": "restaurant.Controllers.AccountController",
-    "Method": "UserLogin",
-    "RelativePath": "api/Account/Login",
+    "Method": "UserRegister",
+    "RelativePath": "api/Account/Register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -45,6 +111,76 @@
       {
         "Name": "user",
         "Type": "restaurant.Models.Login",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.AccountController",
+    "Method": "UpdateCurrecyAdmin",
+    "RelativePath": "api/Account/UpdatCurrency",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "restaurant.Models.UpdateCurrency",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.AccountController",
+    "Method": "UpdateCurrecyAdmin",
+    "RelativePath": "api/Account/UpdatDefaultRouting",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "restaurant.Models.UpdateRouting",
         "IsRequired": true
       }
     ],
@@ -636,6 +772,57 @@
     ]
   },
   {
+    "ContainingType": "restaurant.Controllers.MenuAccessController",
+    "Method": "EditMenuAccessDatas",
+    "RelativePath": "api/MenuAccess/EditMenuAccessDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UpdateList",
+        "Type": "restaurant.Models.MonuAccess",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.MenuAccessController",
+    "Method": "GetAllMenuAccessData",
+    "RelativePath": "api/MenuAccess/GetAllMenuAccessData",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.MonuAccess, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "restaurant.Controllers.MenuAceessController",
     "Method": "GetActiveRole",
     "RelativePath": "api/MenuAceess/GetActiveMenus",
@@ -973,6 +1160,37 @@
   },
   {
     "ContainingType": "restaurant.Controllers.UserController",
+    "Method": "EditChangePassword",
+    "RelativePath": "api/User/EditChangePassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UpdateList",
+        "Type": "restaurant.Models.changePasswordforusercrud",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserController",
     "Method": "UpdateUser",
     "RelativePath": "api/User/EditUser",
     "HttpMethod": "POST",
@@ -1055,15 +1273,15 @@
   },
   {
     "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
-    "Method": "AddNewAddress",
-    "RelativePath": "api/UserCartFinalDetails/AddedUserCartSetDefultAddress",
+    "Method": "AddSatausData",
+    "RelativePath": "api/UserCartFinalDetails/AddSatausData",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "newList",
-        "Type": "restaurant.Models.UserCartFinalDetails\u002BCartDetails",
+        "Type": "restaurant.Models.StoreSatausData",
         "IsRequired": true
       }
     ],
@@ -1199,6 +1417,58 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.OrdersAdmin, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "GetStoreSatausData",
+    "RelativePath": "api/UserCartFinalDetails/GetSatausDataByCartId/{Id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.StoreSatausData, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "GetLoginId",
+    "RelativePath": "api/UserCartFinalDetails/GetStatusUser/{Id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
         "MediaTypes": [
           "text/plain",
           "application/json",

@@ -6,6 +6,7 @@ namespace restaurant.Interfaces
     {
         ICollection<User> GetAllUserData();
         bool AddedUserList(User model);
+      bool EditChangePassword(changePasswordforusercrud model);
         bool EditUser(User model);
         bool DeleteUser(int id);
     }

@@ -2,7 +2,7 @@
 {
     public class ItemDataBseOnUser
     {
-        public string? cartId { get; set; }
+        public int? loginId { get; set; }
         public string? tableName { get; set; }
     }
 }

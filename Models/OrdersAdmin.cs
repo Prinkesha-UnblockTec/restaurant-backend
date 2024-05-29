@@ -8,6 +8,7 @@
         public string? ImageURL { get; set; }
         public string? CategoriesName { get; set; }
         public string? Description { get; set; }
+        public string? Currency { get; set; }
         public int Price { get; set; }
         public string? Status { get; set; }
         public string? Date { get; set; }

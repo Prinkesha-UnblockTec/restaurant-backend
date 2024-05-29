@@ -32,13 +32,12 @@ namespace restaurant.Repository
                         {
                             ID = Convert.ToInt32(reader["ID"]),
                             UserName = reader["UserName"].ToString(),
-                            RoleID = Convert.ToInt32(reader["RoleID"]),
-                            RoleName = reader["RoleName"].ToString(),
-                            Password = reader["Password"].ToString(),
-                            Status = reader["Status"].ToString(),
+                            RoleID = reader["RoleID"] != DBNull.Value ? reader.GetInt32(reader.GetOrdinal("RoleID")) : 0,
+                            Role = reader["Role"] != DBNull.Value ? reader["Role"].ToString() : string.Empty,
+                            Password = reader["Password"] != DBNull.Value ? reader["Password"].ToString() : string.Empty,
+                            Status = reader["Status"] != DBNull.Value ? reader["Status"].ToString() : string.Empty,
                         };
                         UserList.Add(Users);
-
                     }
                 }
             }
@@ -55,7 +54,7 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@UserName", model.UserName);
                     cmd.Parameters.AddWithValue("@Password", model.Password);
                     cmd.Parameters.AddWithValue("@RoleID", model.RoleID);
-                    cmd.Parameters.AddWithValue("@RoleName", model.RoleName);
+                    cmd.Parameters.AddWithValue("@Role", model.Role);
                     cmd.Parameters.AddWithValue("@Status", model.Status);
                     con.Open();
                     cmd.ExecuteNonQuery();
@@ -75,8 +74,24 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@UserName", model.UserName);
                     cmd.Parameters.AddWithValue("@Password", model.Password);
                     cmd.Parameters.AddWithValue("@RoleID", model.RoleID);
-                    cmd.Parameters.AddWithValue("@RoleName", model.RoleName);
+                    cmd.Parameters.AddWithValue("@Role", model.Role);
                     cmd.Parameters.AddWithValue("@Status", model.Status);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+        public bool EditChangePassword(changePasswordforusercrud model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("ChangeParticularUserPasswordChange", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ID", model.ID);
+                    cmd.Parameters.AddWithValue("@Password", model.Password);
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }

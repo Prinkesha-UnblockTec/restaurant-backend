@@ -75,6 +75,29 @@ namespace restaurant.Controllers
             }
             return BadRequest("This Role Name is Already Exist");
         }
+        
+            [Route("EditChangePassword")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult EditChangePassword([FromBody] changePasswordforusercrud UpdateList)
+        {
+            if (UpdateList == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var UpdateListData = _mapper.Map<changePasswordforusercrud>(UpdateList);
+            if (_userRepository.EditChangePassword(UpdateListData))
+            {
+                return Ok(new { Message = "Successfully Updated", status = 1 });
+            }
+            return BadRequest("This Role Name is Already Exist");
+        }
         [HttpDelete("DeleteUser/{Id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

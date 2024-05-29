@@ -65,6 +65,7 @@ builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<ICategoriesItemsRepository, CategoriesItemsRepository>();
 builder.Services.AddScoped<IUserCartFinalDetails, UserCartFinalDetailsRepository>();
 builder.Services.AddScoped<IDeliveryAddressRepository, DeliveryAddressRepository>();
+builder.Services.AddScoped<IMenuAccessRepository, MenuAccessRepository>();
 
 
 

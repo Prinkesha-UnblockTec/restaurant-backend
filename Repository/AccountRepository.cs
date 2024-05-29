@@ -18,6 +18,231 @@ namespace restaurant.Repository
         {
             throw new NotImplementedException();
         }
+        public bool AddedRegisterList(Login model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SaveRegisterData", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserName", model.UserName);
+                    cmd.Parameters.AddWithValue("@Password", model.Password);
+                    cmd.Parameters.AddWithValue("@Role", model.Role);
+                    cmd.Parameters.AddWithValue("@Status", model.Status);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+        public (bool IsValidUser, int? NewUserId) UserLogin(Login user)
+        {
+            int? newUserId = null;
+            bool isValidUser = false;
+
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("CheckUserCredentials", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserName", user.UserName);
+                    cmd.Parameters.AddWithValue("@Password", user.Password);
+
+                    SqlParameter outputValidUserParam = new SqlParameter("@IsValidUser", SqlDbType.Bit)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    cmd.Parameters.Add(outputValidUserParam);
+
+                    SqlParameter outputIdParam = new SqlParameter("@LoginId", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    cmd.Parameters.Add(outputIdParam);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+
+                    isValidUser = Convert.ToBoolean(outputValidUserParam.Value);
+                    if (outputIdParam.Value != DBNull.Value)
+                    {
+                        newUserId = Convert.ToInt32(outputIdParam.Value);
+                    }
+                }
+            }
+
+            return (isValidUser, newUserId);
+        }
+
+        public ICollection<User> GetLoginUserDataBaseOnID(int Id)
+        {
+            var UserList = new List<User>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("getAllUserDatas", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ID", Id));
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        User Users = new User
+                        {
+                            ID = Convert.ToInt32(reader["ID"]),
+                            UserName = reader["UserName"].ToString(),
+                            RoleID = reader["RoleID"] != DBNull.Value ? reader.GetInt32(reader.GetOrdinal("RoleID")) : 0,
+                            Role = reader["Role"] != DBNull.Value ? reader["Role"].ToString() : string.Empty,
+                            Password = reader["Password"] != DBNull.Value ? reader["Password"].ToString() : string.Empty,
+                            Status = reader["Status"] != DBNull.Value ? reader["Status"].ToString() : string.Empty,
+                        };
+                        UserList.Add(Users);
+                    }
+                }
+            }
+            return UserList;
+        }
+        public bool SetDefaultRouting(UpdateRouting model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SetDefaultRouting", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ID", model.ID);
+                    cmd.Parameters.AddWithValue("@RouteName", model.RouteName);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+
+        public ICollection<UpdateRouting> GetDefaultRouting()
+        {
+            var RoutingList = new List<UpdateRouting>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetDefaultRouting", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        UpdateRouting items = new UpdateRouting
+                        {
+                            ID = Convert.ToInt32(reader["ID"]),
+                            RouteName = reader["RouteName"].ToString(),
+                        };
+                        RoutingList.Add(items);
+
+                    }
+                }
+            }
+            return RoutingList;
+        }
+        public bool UpdateCurrecyAdmin(UpdateCurrency model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdateCurrency", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ID", model.Id);
+                    cmd.Parameters.AddWithValue("@Currency", model.Currency);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+        public string GetCurrecyAdmin()
+        {
+            string currency = "" ;
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetCurrency", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        currency = reader["Currency"].ToString();
+                    }
+                }
+            }
+            return currency;
+        }
+        private int RetrieveUserIdByUser(string UserName)
+        {
+            int userId = 0;
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetIdByEmail", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@UserName", UserName);
+                con.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        userId = Convert.ToInt32(reader["ID"]);
+                    }
+                }
+            }
+
+            return userId;
+        }
+
+        public ICollection<Role> GetAllUserWithRoleData()
+        {
+            var RoleList = new List<Role>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetAllRoleData", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Role Roles = new Role
+                        {
+                            ID = Convert.ToInt32(reader["ID"]),
+                            RoleName = reader["RoleName"].ToString(),
+                            Status = reader["Status"].ToString(),
+                        };
+                        RoleList.Add(Roles);
+
+                    }
+                }
+            }
+            return RoleList;
+        }
 
         public ICollection<LoginInfo> GetLoginIdByUsernameAndPasswordAsync(string userName, string password)
         {
@@ -83,6 +308,8 @@ namespace restaurant.Repository
             return loginResult;
         }
 
+
+
         public bool UpdateLogin(loginwithallDetails model)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -103,6 +330,13 @@ namespace restaurant.Repository
             }
             return true;
         }
+
+        int IAccountRepository.RetrieveUserIdByUser(string UserName)
+        {
+            throw new NotImplementedException();
+        }
+
+      
 
 
         //private int RetrieveUserIdByEmail(string UserName)
