@@ -21,6 +21,8 @@
             public int? LoginId { get; set; }
             public int? PinCode { get; set; }
             public string? Username { get; set; }
+            public string? TableNo { get; set; }
+            public string? OrderType { get; set; }
             public string? Date { get; set; }
             public string? City { get; set; }
             public string? State { get; set; }

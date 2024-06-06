@@ -97,6 +97,8 @@ namespace restaurant.Repository
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@LoginId", model.LoginId);
                         cmd.Parameters.AddWithValue("@UserName", model.Username);
+                        cmd.Parameters.AddWithValue("@TableNo", model.TableNo);
+                        cmd.Parameters.AddWithValue("@OrderType", model.OrderType);
                         cmd.Parameters.AddWithValue("@Address", model.Address);
                         cmd.Parameters.AddWithValue("@City", model.City);
                         cmd.Parameters.AddWithValue("@State", model.State);
@@ -105,6 +107,18 @@ namespace restaurant.Repository
                         cmd.Parameters.AddWithValue("@Currency", model.Currency);
                         cmd.Parameters.AddWithValue("@Date", model.Date);
                         cmd.Parameters.AddWithValue("@DeliveryName", model.DeliverName);
+                        if (model.OrderType == "Pick-Up")
+                        {
+                            cmd.Parameters.AddWithValue("@Status", "Accepted");
+                        }
+                        else if(model.OrderType == "Delivery")
+                        {
+                            cmd.Parameters.AddWithValue("@Status", "Ordered");
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Status", "Inprogress");
+                        }
                         SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int)
                         {
                             Direction = ParameterDirection.Output
@@ -119,7 +133,14 @@ namespace restaurant.Repository
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@CartId", newUserId);
-                        cmd.Parameters.AddWithValue("@Status", "Pending");
+                        if (model.OrderType == "Pick-Up")
+                        {
+                            cmd.Parameters.AddWithValue("@Status", "Accepted");
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Status", "Ordered");
+                        }
                         cmd.ExecuteNonQuery();
                     }
 
@@ -131,6 +152,7 @@ namespace restaurant.Repository
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@CartId", newUserId);
                             cmd.Parameters.AddWithValue("@UserCartId", model.Username);
+                            cmd.Parameters.AddWithValue("@TableNo", model.TableNo);
                             cmd.Parameters.AddWithValue("@Date", model.Date);
                             cmd.Parameters.AddWithValue("@ItemName", product.ItemName);
                             cmd.Parameters.AddWithValue("@Price", product.Price);
@@ -246,6 +268,7 @@ namespace restaurant.Repository
                         product.Id = reader.GetInt32(reader.GetOrdinal("ID"));
                         product.Date = reader["Date"].ToString();
                         product.UserName = reader["UserName"].ToString();
+                        product.OrderType = reader["OrderType"] != DBNull.Value ? reader["OrderType"].ToString() : string.Empty; 
                         product.Time = reader["Time"].ToString();
                         product.Status = reader["Status"].ToString();
                         product.Currency = reader["Currency"].ToString();
@@ -409,6 +432,64 @@ namespace restaurant.Repository
                 }
             }
             return StatusList;
+        }
+
+
+
+        public string GetLastSelectedOrderType()
+        {
+            string orderType = "";
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetLastSelectedOrderType", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        orderType = reader["OrderType"].ToString();
+                    }
+                }
+            }
+            return orderType;
+        }
+
+        public bool AddedDataBaseCartId(CartModel model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                using (SqlTransaction transaction = con.BeginTransaction())
+                {
+                    foreach (var product in model.Products)
+                    {
+                        using (SqlCommand cmd = new SqlCommand("AddedItemsDetails", con, transaction))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@CartId", model.CartId);
+                            cmd.Parameters.AddWithValue("@UserCartId", model.UserCartId);
+                            cmd.Parameters.AddWithValue("@TableNo", model.TableNo);
+                            cmd.Parameters.AddWithValue("@Date", model.Date);
+                            cmd.Parameters.AddWithValue("@ItemName", product.ItemName);
+                            cmd.Parameters.AddWithValue("@Price", product.Price);
+                            cmd.Parameters.AddWithValue("@CategoriesName", product.CategoriesName);
+                            cmd.Parameters.AddWithValue("@Description", product.Description);
+                            cmd.Parameters.AddWithValue("@Currency", model.Currency);
+                            cmd.Parameters.AddWithValue("@ImageURL", product.ImageURL);
+                            cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    transaction.Commit();
+                }
+            }
+            return true;
         }
     }
 }

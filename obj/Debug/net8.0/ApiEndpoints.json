@@ -67,6 +67,26 @@
   },
   {
     "ContainingType": "restaurant.Controllers.AccountController",
+    "Method": "GetOrderTypes",
+    "RelativePath": "api/Account/GetOrderTypes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.OrderTypes, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.AccountController",
     "Method": "UserLogin",
     "RelativePath": "api/Account/Login",
     "HttpMethod": "POST",
@@ -216,6 +236,41 @@
       {
         "Name": "model",
         "Type": "restaurant.Models.loginwithallDetails",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.AccountController",
+    "Method": "UpdateOrderTypeStatus",
+    "RelativePath": "api/Account/UpdateOrderTypStatus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "selectedOrderTypes",
+        "Type": "System.Int32[]",
         "IsRequired": true
       }
     ],
@@ -587,6 +642,123 @@
     ]
   },
   {
+    "ContainingType": "restaurant.Controllers.DashboardController",
+    "Method": "GetFilteredOrderDetails",
+    "RelativePath": "api/Dashboard/FilterDataChart",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newList",
+        "Type": "restaurant.Models.OrderFilterModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.DashboardController",
+    "Method": "StausWiseShowOrder",
+    "RelativePath": "api/Dashboard/GetStatusWiseOrderCount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.StausWiseShowOrder, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.DashboardController",
+    "Method": "TotalCategorywithItemSale",
+    "RelativePath": "api/Dashboard/GetTotalCategorywithItemSale",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.TotalCategorywithItemSale, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.DashboardController",
+    "Method": "TotalItemRecord",
+    "RelativePath": "api/Dashboard/GetTotalQuaAndPriceInItemRecord",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.TotalItemRecord, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.DashboardController",
+    "Method": "OrderSummary",
+    "RelativePath": "api/Dashboard/OrderSummary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.OrderSummary, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "restaurant.Controllers.DeliveryAddressController",
     "Method": "AddedDeliveryAddresses",
     "RelativePath": "api/DeliveryAddress/AddedDeliveryAddressList",
@@ -768,6 +940,194 @@
           "text/json"
         ],
         "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.MasterController",
+    "Method": "AddedRole",
+    "RelativePath": "api/Master/AddedMasterList",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newList",
+        "Type": "restaurant.Models.Master",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.MasterController",
+    "Method": "DeleteMaster",
+    "RelativePath": "api/Master/DeleteMaster/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.MasterController",
+    "Method": "EditMaster",
+    "RelativePath": "api/Master/EditMaster",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "RoleList",
+        "Type": "restaurant.Models.Master",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.MasterController",
+    "Method": "GetActiveRole",
+    "RelativePath": "api/Master/GetActiveMaster",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.ActiveMaster, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.MasterController",
+    "Method": "GetAllMasterData",
+    "RelativePath": "api/Master/GetAllMasterData",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.Master, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.MasterController",
+    "Method": "GetLastRecordByTableNo",
+    "RelativePath": "api/Master/GetLastRecordByTableNo/{tableNo}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tableNo",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.CartIDAndUserName, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.MasterController",
+    "Method": "GetTotalAmountTableNo",
+    "RelativePath": "api/Master/GetTotalAmountTableNo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
       }
     ]
   },
@@ -1242,6 +1602,37 @@
   },
   {
     "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "AddedDataBaseCartId",
+    "RelativePath": "api/UserCartFinalDetails/AddedDataBaseCartId",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newList",
+        "Type": "restaurant.Models.CartModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
     "Method": "AddNewTask",
     "RelativePath": "api/UserCartFinalDetails/AddedUserCartData",
     "HttpMethod": "POST",
@@ -1391,6 +1782,26 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.ItemDataBseOnUser, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "GetLastSelectedOrderTypes",
+    "RelativePath": "api/UserCartFinalDetails/GetLastSelectedOrderType",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
         "MediaTypes": [
           "text/plain",
           "application/json",

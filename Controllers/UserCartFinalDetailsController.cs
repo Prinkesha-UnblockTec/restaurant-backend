@@ -35,15 +35,6 @@ namespace restaurant.Controllers
         [ProducesResponseType(400)]
         public IActionResult AddNewTask([FromBody] UserCartFinalDetails.CartDetails newList)
         {
-            if (newList == null)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             var CreateList = _mapper.Map<UserCartFinalDetails.CartDetails>(newList);
             if (_userCartFinalDetails.AddedUserCartList(CreateList))
@@ -186,5 +177,42 @@ namespace restaurant.Controllers
             }
             return Ok(new { List = TaskList, status = 1 });
         }
+        [Route("GetLastSelectedOrderType")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(string))]
+        public IActionResult GetLastSelectedOrderTypes()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = _userCartFinalDetails.GetLastSelectedOrderType();
+            return Ok(new { result });
+
+        }
+        [Route("AddedDataBaseCartId")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult AddedDataBaseCartId([FromBody] CartModel newList)
+        {
+            if (newList == null)
+            {
+                return BadRequest(ModelState);  
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var CreateList = _mapper.Map<CartModel>(newList);
+            if (_userCartFinalDetails.AddedDataBaseCartId(CreateList))
+            {
+                return Ok(new { Message = "Successfully Created", status = 1 });
+            }
+            return BadRequest("TaskList Already Exist");
+        }
+
     }
 }

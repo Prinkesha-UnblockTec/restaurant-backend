@@ -16,5 +16,8 @@ namespace restaurant.Interfaces
 
         bool SetDefaultRouting(UpdateRouting model);
         ICollection<UpdateRouting> GetDefaultRouting();
+        ICollection<OrderTypes> GetOrderTypes();
+        Task UpdateOrderTypeStatusAsync(string selectedOrderTypes);
+
     }
 }

@@ -14,6 +14,9 @@ namespace restaurant.Interfaces
         ICollection<DeliveryAddress> GetAddressByUsernamePassword(string username, string password);
         ICollection<DeliveryAddress> GetAddressByOrderId(int id);
        string GetStatusUser(int id);
+        string GetLastSelectedOrderType();
+        bool AddedDataBaseCartId(CartModel model);
+        //ICollection<DeliveryAddress> GetExistingOrderIdBasEONtABLE();
         //string? GetAddressByUsernamePassword(UserNameandPassword model);
     }
 }

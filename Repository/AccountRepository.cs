@@ -336,7 +336,53 @@ namespace restaurant.Repository
             throw new NotImplementedException();
         }
 
-      
+        public ICollection<OrderTypes> GetOrderTypes()
+        {
+            var OrderTypesList = new List<OrderTypes>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetOrderTypes", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        OrderTypes item = new OrderTypes
+                        {
+                            ID = Convert.ToInt32(reader["ID"]),
+                            OrderType = reader["OrderType"].ToString(),
+                            Status = reader["Status"].ToString(),
+                        };
+                        OrderTypesList.Add(item);
+
+                    }
+                }
+            }
+            return OrderTypesList;
+        }
+
+        public async Task UpdateOrderTypeStatusAsync(string selectedOrderTypes)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdateOrderTypeStatus", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@SelectedOrderTypes", SqlDbType.NVarChar)
+                    {
+                        Value = selectedOrderTypes
+                    });
+
+                    conn.Open();
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
 
 
         //private int RetrieveUserIdByEmail(string UserName)

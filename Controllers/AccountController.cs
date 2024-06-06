@@ -152,7 +152,7 @@ namespace restaurant.Controllers
         [Route("GetCurrency")]
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(string))]
-        public IActionResult GetCurrecyAdmin ()
+        public IActionResult GetCurrecyAdmin()
         {
             if (!ModelState.IsValid)
             {
@@ -177,7 +177,7 @@ namespace restaurant.Controllers
                 return BadRequest(ModelState);
             }
             var result = _accountRepository.SetDefaultRouting(model);
-            return Ok(new {message = "updated successfully." });
+            return Ok(new { message = "updated successfully." });
 
         }
         [Route("GetDefaultRouting")]
@@ -192,8 +192,34 @@ namespace restaurant.Controllers
             }
             return Ok(new { List = TaskList, status = 1 });
         }
+
+        [Route("GetOrderTypes")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OrderTypes>))]
+        public IActionResult GetOrderTypes()
+        {
+            var OrderTypes = _accountRepository.GetOrderTypes();
+            return Ok(new { List = OrderTypes });
+        }
+        [HttpPost("UpdateOrderTypStatus")]
+        [ProducesResponseType(200, Type = typeof(string))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> UpdateOrderTypeStatus([FromBody] int[] selectedOrderTypes)
+        {
+            if (selectedOrderTypes == null || selectedOrderTypes.Length == 0)
+            {
+                return BadRequest("No order types selected.");
+            }
+
+            // Convert the array of integers to a comma-separated string
+            string selectedOrderTypesString = string.Join(",", selectedOrderTypes);
+
+            await _accountRepository.UpdateOrderTypeStatusAsync(selectedOrderTypesString);
+            return Ok("Order types updated successfully.");
+        }
     }
 }
+
 
 
 
