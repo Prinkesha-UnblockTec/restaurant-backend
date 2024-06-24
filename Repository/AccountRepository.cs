@@ -355,7 +355,7 @@ namespace restaurant.Repository
                         {
                             ID = Convert.ToInt32(reader["ID"]),
                             OrderType = reader["OrderType"].ToString(),
-                            Status = reader["Status"].ToString(),
+                            Status = Convert.ToInt32(reader["Status"])
                         };
                         OrderTypesList.Add(item);
 

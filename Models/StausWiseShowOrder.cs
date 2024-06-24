@@ -4,5 +4,6 @@
     {
         public ICollection<ShowOrders> ShowOrderss { get; set; }
         public int TotalRecords { get; set; }
+        public int TotalAmount { get; set; }
     }
 }

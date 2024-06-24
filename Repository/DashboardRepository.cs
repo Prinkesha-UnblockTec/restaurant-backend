@@ -19,6 +19,7 @@ namespace restaurant.Repository
         {
             var StausWiseShowOrderList = new List<ShowOrders>();
             int totalRecords = 0;
+            int totalAmount = 0;
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -46,6 +47,7 @@ namespace restaurant.Repository
                         if (reader.Read())
                         {
                             totalRecords = reader["TotalRecords"] != DBNull.Value ? Convert.ToInt32(reader["TotalRecords"]) : 0;
+                            totalAmount = reader["TotalAmount"] != DBNull.Value ? Convert.ToInt32(reader["TotalAmount"]) : 0;
                         }
                     }
                 }
@@ -53,7 +55,8 @@ namespace restaurant.Repository
             return new StausWiseShowOrder
             {
                 ShowOrderss = StausWiseShowOrderList,
-                TotalRecords = totalRecords
+                TotalRecords = totalRecords,
+                TotalAmount = totalAmount,
             };
             //return StausWiseShowOrderList;
         }
@@ -188,5 +191,67 @@ namespace restaurant.Repository
             return orderDetails;
         }
 
+        public ICollection<DayWiseTotalAmount> GetDayWiseTotalAmount(OnlyDates model)
+        {
+            var DayWiseTotalAmount = new List<DayWiseTotalAmount>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetDayWiseTotalAmount", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@FromDate", model.FromDate);
+                cmd.Parameters.AddWithValue("@ToDate", model.ToDate);
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DayWiseTotalAmount items = new DayWiseTotalAmount
+                        {
+                            DayOfWeek = reader["DayOfWeek"].ToString(),
+                            TotalAmount = Convert.ToInt32(reader["TotalAmount"]),
+                            TotalQuantity = Convert.ToInt32(reader["TotalQuantity"]),
+                        };
+                        DayWiseTotalAmount.Add(items);
+
+                    }
+                }
+            }
+            return DayWiseTotalAmount;
+        }
+
+        public ICollection<GetTopSellingItems> GetTopSellingItems(TopSellingItemsParameters model)
+        {
+            var TopSellingItems = new List<GetTopSellingItems>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetTopSellingItems", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@FromDate", model.FromDate);
+                cmd.Parameters.AddWithValue("@ToDate", model.ToDate);
+                cmd.Parameters.AddWithValue("@TopOrBottom", model.TopOrBottom);
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        GetTopSellingItems items = new GetTopSellingItems
+                        {
+                            ItemName = reader["ItemName"].ToString(),
+                            TotalQuantity = Convert.ToInt32(reader["TotalQuantity"]),
+                            RowNumber = Convert.ToInt32(reader["RowNumber"]),
+                        };
+                        TopSellingItems.Add(items);
+
+                    }
+                }
+            }
+            return TopSellingItems;
+        }
     }
 }

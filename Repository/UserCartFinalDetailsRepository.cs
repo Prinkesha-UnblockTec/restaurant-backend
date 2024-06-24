@@ -137,9 +137,13 @@ namespace restaurant.Repository
                         {
                             cmd.Parameters.AddWithValue("@Status", "Accepted");
                         }
-                        else
+                        else if (model.OrderType == "Delivery")
                         {
                             cmd.Parameters.AddWithValue("@Status", "Ordered");
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Status", "Inprogress");
                         }
                         cmd.ExecuteNonQuery();
                     }

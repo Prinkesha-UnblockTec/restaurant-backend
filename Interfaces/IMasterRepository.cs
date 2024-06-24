@@ -8,6 +8,7 @@ namespace restaurant.Interfaces
         bool AddedMasterList(Master model);
         bool EditMaster(Master model);
         bool DeleteMaster(int id);
+        bool SetDefualtMaster(int id);
         ICollection<ActiveMaster> GetActiveMaster();
         ICollection<TableNoBaseTotalAmount> GetTotalAmountTableNo();
         ICollection<CartIDAndUserName> GetLastRecordByTableNo(string TableNo);

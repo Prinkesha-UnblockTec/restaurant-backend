@@ -2,6 +2,8 @@
 using restaurant.Models;
 using System.Data.SqlClient;
 using System.Data;
+using System.Reflection;
+using static System.Runtime.InteropServices.Marshalling.IIUnknownCacheStrategy;
 
 namespace restaurant.Repository
 {
@@ -114,6 +116,7 @@ namespace restaurant.Repository
                             ID = Convert.ToInt32(reader["ID"]),
                             TableNo = reader["TableNo"].ToString(),
                             Status = reader["Status"].ToString(),
+                            isDefault = reader["isDefault"].ToString(),
                         };
                         MasterList.Add(item);
 
@@ -180,5 +183,23 @@ namespace restaurant.Repository
             }
             return TotalAmountList;
         }
+        public bool SetDefualtMaster(int id)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SetDefaultTable", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@TableID", id));
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            return true;
+        }
     }
 }
+
+
+

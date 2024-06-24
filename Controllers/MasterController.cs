@@ -75,6 +75,28 @@ namespace restaurant.Controllers
             }
             return BadRequest("This Master Name is Already Exist");
         }
+        [Route("SetDefultTable/{Id}")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult SetDefultTable(int Id)
+        {
+            if (Id == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_masterRepository.SetDefualtMaster(Id))
+            {
+                ModelState.AddModelError("", "Something went wrong while updating");
+                return StatusCode(500, ModelState);
+            }
+            return Ok(new { status = 1 });
+        }
         [HttpDelete("DeleteMaster/{Id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

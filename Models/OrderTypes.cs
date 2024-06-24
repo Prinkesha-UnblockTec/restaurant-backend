@@ -4,6 +4,6 @@
     {
         public int ID { get; set; }
         public string? OrderType { get; set; }
-        public string? Status { get; set; }
+        public int Status { get; set; }
     }
 }
