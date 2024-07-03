@@ -3,6 +3,7 @@
     public class OrdersAdmin
     {
         public int Id { get; set; }
+        public bool Checked { get; set; }
         public string? UserName { get; set; }
         public int Quantity { get; set; }
         public string? ImageURL { get; set; }

@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Net;
 using static restaurant.Models.UserCartFinalDetails;
 using System.Transactions;
+using System.Reflection;
 
 namespace restaurant.Repository
 {
@@ -111,13 +112,13 @@ namespace restaurant.Repository
                         {
                             cmd.Parameters.AddWithValue("@Status", "Accepted");
                         }
-                        else if(model.OrderType == "Delivery")
+                        else if (model.OrderType == "Delivery")
                         {
                             cmd.Parameters.AddWithValue("@Status", "Ordered");
                         }
                         else
                         {
-                            cmd.Parameters.AddWithValue("@Status", "Inprogress");
+                            cmd.Parameters.AddWithValue("@Status", "Accepted");
                         }
                         SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int)
                         {
@@ -165,8 +166,21 @@ namespace restaurant.Repository
                             cmd.Parameters.AddWithValue("@Currency", model.Currency);
                             cmd.Parameters.AddWithValue("@ImageURL", product.ImageURL);
                             cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
+                            cmd.Parameters.AddWithValue("@Checked", 0);
                             cmd.ExecuteNonQuery();
                         }
+                    }
+                    using (SqlCommand cmd = new SqlCommand("AddNotification", con, transaction))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@OrderId", newUserId);
+                        cmd.Parameters.AddWithValue("@Description", "New Order is pending");
+                        cmd.Parameters.AddWithValue("@IsRead", 0);
+                        cmd.Parameters.AddWithValue("@DateTime", DateTime.Now);
+                        cmd.Parameters.AddWithValue("@RoleName", "Admin");
+                        cmd.Parameters.AddWithValue("@OrderType", model.OrderType);
+                        cmd.Parameters.AddWithValue("@Status", 0);
+                        cmd.ExecuteNonQuery();
                     }
 
                     transaction.Commit();
@@ -222,7 +236,7 @@ namespace restaurant.Repository
                 using (SqlCommand cmd = new SqlCommand("GetOrdersInAdmin", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@CartId",ID);
+                    cmd.Parameters.AddWithValue("@CartId", ID);
 
                     connection.Open();
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -231,7 +245,9 @@ namespace restaurant.Repository
                         {
                             OrdersAdmin product = new OrdersAdmin();
                             product.Id = reader.GetInt32(reader.GetOrdinal("ID"));
+                            product.Checked = reader.GetBoolean(reader.GetOrdinal("Checked"));
                             product.Date = reader["Date"].ToString();
+                            //product.Checked = reader["Checked"].ToString();
                             product.ImageURL = reader["ImageURL"].ToString();
                             product.ItemName = reader["ItemName"].ToString();
                             product.CategoriesName = reader["CategoriesName"].ToString();
@@ -272,7 +288,7 @@ namespace restaurant.Repository
                         product.Id = reader.GetInt32(reader.GetOrdinal("ID"));
                         product.Date = reader["Date"].ToString();
                         product.UserName = reader["UserName"].ToString();
-                        product.OrderType = reader["OrderType"] != DBNull.Value ? reader["OrderType"].ToString() : string.Empty; 
+                        product.OrderType = reader["OrderType"] != DBNull.Value ? reader["OrderType"].ToString() : string.Empty;
                         product.Time = reader["Time"].ToString();
                         product.Status = reader["Status"].ToString();
                         product.Currency = reader["Currency"].ToString();
@@ -492,6 +508,126 @@ namespace restaurant.Repository
 
                     transaction.Commit();
                 }
+            }
+            return true;
+        }
+
+        public bool UpdateNotificationRoleName(UpdateRoleNameForNotification model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdateRoleNameNotification", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@NotificationId", model.Id);
+                    cmd.Parameters.AddWithValue("@RoleName", model.RoleName);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+        public bool UpdateNotificationIsRead(UpdateRoleNameForNotification model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdateIsReadNotification", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@NotificationId", model.Id);
+                    cmd.Parameters.AddWithValue("@IsRead", 1);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+
+        public ICollection<Notification> GetAllNotificationData()
+        {
+            var RoleList = new List<Notification>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetAllNotification", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Notification Items = new Notification
+                        {
+                            Id = Convert.ToInt32(reader["ID"]),
+                            OrderId = Convert.ToInt32(reader["OrderId"]),
+                            IsRead = Convert.ToInt32(reader["IsRead"]),
+                            Status = Convert.ToInt32(reader["Status"]),
+                            RoleName = reader["RoleName"].ToString(),
+                            OrderType = reader["OrderType"].ToString(),
+                            Description = reader["Description"].ToString(),
+                            DateTime = Convert.ToDateTime(reader["DateTime"])
+                        };
+                        RoleList.Add(Items);
+
+                    }
+                }
+            }
+            return RoleList;
+        }
+        public bool UpdateNotification(Notification model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdatedNotification", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", model.Id);
+                    cmd.Parameters.AddWithValue("@RoleName", model.RoleName);
+                    cmd.Parameters.AddWithValue("@Description", model.Description);
+                    cmd.Parameters.AddWithValue("@Status", model.Status);
+                    cmd.Parameters.AddWithValue("@IsRead",0);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+
+        public bool UpdateCheckedItems(UpdateCheckedItems model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdateCheckedItems", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", model.Id);
+                    cmd.Parameters.AddWithValue("@checked", model.Checked);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+
+        public bool DeleteCompleteOrderforNotification(int Id)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("DeleteNotificationData", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@ID", Id);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
             }
             return true;
         }

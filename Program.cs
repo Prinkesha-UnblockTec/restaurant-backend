@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using restaurant.Hubs;
 using restaurant.Interfaces;
 using restaurant.Repository;
 using System.Text;
@@ -35,12 +36,19 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-    builder.Services.AddCors(options =>
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
     {
-        options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-    }); ;
+        builder.WithOrigins("http://localhost:4200")  // Adjust the origin to match your Angular application's URL
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();  // Allow credentials
+    });
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(x =>
 {
@@ -56,7 +64,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ClockSkew = TimeSpan.Zero
     };
 });
-
+builder.Services.AddSignalR();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -66,8 +74,9 @@ builder.Services.AddScoped<ICategoriesItemsRepository, CategoriesItemsRepository
 builder.Services.AddScoped<IUserCartFinalDetails, UserCartFinalDetailsRepository>();
 builder.Services.AddScoped<IDeliveryAddressRepository, DeliveryAddressRepository>();
 builder.Services.AddScoped<IMenuAccessRepository, MenuAccessRepository>();
-builder.Services.AddScoped<IDashboardRepository, DashboardRepository>(); 
-builder.Services.AddScoped<IMasterRepository, MasterRepository>(); 
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IMasterRepository, MasterRepository>();
+builder.Services.AddScoped<IChefMaster, ChefMasterRepository>(); 
 
 
 
@@ -88,17 +97,22 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseWebSockets();
 app.UseStaticFiles();
-
 
 app.UseCors();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseRouting(); // Ensure UseRouting is called before UseEndpoints
+
+app.UseWebSockets();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<NotificationHub>("/notificationHub");
+});
 
 app.Run();
 

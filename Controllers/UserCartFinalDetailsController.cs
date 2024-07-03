@@ -213,6 +213,101 @@ namespace restaurant.Controllers
             }
             return BadRequest("TaskList Already Exist");
         }
+        [Route("GetNotificationData")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Notification>))]
+        public IActionResult GetRole()
+        {
+            var TaskList = _mapper.Map<List<Notification>>(_userCartFinalDetails.GetAllNotificationData());
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(new { List = TaskList, status = 1 });
+        }
+        [Route("EditIsReadInNotification")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateRole([FromBody] UpdateRoleNameForNotification RoleList)
+        {
+            if (RoleList == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var UpdateListData = _mapper.Map<UpdateRoleNameForNotification>(RoleList);
+            if (_userCartFinalDetails.UpdateNotificationIsRead(UpdateListData))
+            {
+                return Ok(new { Message = "Successfully Updated", status = 1 });
+            }
+            return BadRequest("This Role Name is Already Exist");
+        }
+        [Route("EditNotification")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult EditNotification([FromBody] Notification RoleList)
+        {
+            if (RoleList == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var UpdateListData = _mapper.Map<Notification>(RoleList);
+            if (_userCartFinalDetails.UpdateNotification(UpdateListData))
+            {
+                return Ok(new { Message = "Successfully Updated", status = 1 });
+            }
+            return BadRequest("This Role Name is Already Exist");
+        }
+        [Route("UpdateCheckedItems")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateChefItems([FromBody] UpdateCheckedItems List)
+        {
+            if (List == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var UpdateListData = _mapper.Map<UpdateCheckedItems>(List);
+            if (_userCartFinalDetails.UpdateCheckedItems(UpdateListData))
+            {
+                return Ok(new { Message = "Successfully Updated", status = 1 });
+            }
+            return BadRequest("This Role Name is Already Exist");
+        }
+        [HttpDelete("DeleteCompleteOrderforNotification/{Id}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteRole(int Id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+
+            if (!_userCartFinalDetails.DeleteCompleteOrderforNotification(Id))
+            {
+                ModelState.AddModelError("", "Something went wrong while updating");
+                return StatusCode(500, ModelState);
+            }
+            return Ok(new { status = 1 });
+        }
 
     }
 }

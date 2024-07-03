@@ -642,6 +642,128 @@
     ]
   },
   {
+    "ContainingType": "restaurant.Controllers.ChefMasterControllers",
+    "Method": "AddedRole",
+    "RelativePath": "api/ChefMasterControllers/AddedChefList",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newList",
+        "Type": "restaurant.Models.ChefMaster",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.ChefMasterControllers",
+    "Method": "DeleteRole",
+    "RelativePath": "api/ChefMasterControllers/DeleteChef/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.ChefMasterControllers",
+    "Method": "UpdateRole",
+    "RelativePath": "api/ChefMasterControllers/EditChef",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newList",
+        "Type": "restaurant.Models.ChefMaster",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.ChefMasterControllers",
+    "Method": "GetRole",
+    "RelativePath": "api/ChefMasterControllers/GetChefList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.ChefMaster, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "restaurant.Controllers.DashboardController",
     "Method": "GetFilteredOrderDetails",
     "RelativePath": "api/Dashboard/FilterDataChart",
@@ -1788,6 +1910,108 @@
   },
   {
     "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "DeleteRole",
+    "RelativePath": "api/UserCartFinalDetails/DeleteCompleteOrderforNotification/{Id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "UpdateRole",
+    "RelativePath": "api/UserCartFinalDetails/EditIsReadInNotification",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "RoleList",
+        "Type": "restaurant.Models.UpdateRoleNameForNotification",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "EditNotification",
+    "RelativePath": "api/UserCartFinalDetails/EditNotification",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "RoleList",
+        "Type": "restaurant.Models.Notification",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
     "Method": "GetAddressByOrderId",
     "RelativePath": "api/UserCartFinalDetails/GetAddressByOrderId",
     "HttpMethod": "POST",
@@ -1906,6 +2130,26 @@
   },
   {
     "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "GetRole",
+    "RelativePath": "api/UserCartFinalDetails/GetNotificationData",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.Notification, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
     "Method": "GetOrdersInAdminData",
     "RelativePath": "api/UserCartFinalDetails/GetOrdersInAdminData/{Id}",
     "HttpMethod": "GET",
@@ -1979,6 +2223,37 @@
           "text/json"
         ],
         "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "UpdateChefItems",
+    "RelativePath": "api/UserCartFinalDetails/UpdateCheckedItems",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "List",
+        "Type": "restaurant.Models.UpdateCheckedItems",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
       }
     ]
   },

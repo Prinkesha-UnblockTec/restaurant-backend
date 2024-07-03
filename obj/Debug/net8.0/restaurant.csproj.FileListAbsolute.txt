@@ -49,3 +49,6 @@ D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\System.Ide
 D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\restaurant.staticwebassets.runtime.json
 D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\SixLabors.ImageSharp.dll
 D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\obj\Debug\net8.0\restaurant.sourcelink.json
+D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
+D:\ASP.NET(CORE)\demo-practics\restaurant\restaurant\bin\Debug\net8.0\System.Text.Json.dll
