@@ -30,5 +30,5 @@ namespace restaurant.Hubs
             }
             await base.OnDisconnectedAsync(exception);
         }
-}
+    }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using restaurant.Interfaces;
 using restaurant.Models;
 using restaurant.Repository;
+using System.Diagnostics;
 
 namespace restaurant.Controllers
 {
@@ -121,6 +122,37 @@ namespace restaurant.Controllers
 
            var FilterData =  _dashboardRepository.GetFilteredOrderDetails(newList);
                 return Ok(new { List = FilterData,  status = 1 });
+        }
+        [Route("PaymentChartDatas")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult PaymentChartDataCharts([FromBody] PaymentChartData newList)
+        {
+            if (newList == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var FilterData = _mapper.Map<List<PaymentChartDatas>>(_dashboardRepository.GetPaymentData(newList));
+            return Ok(new { List = FilterData, status = 1 });
+        }
+        [Route("GetAllPaymentData")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<PaymentChartDatas>))]
+        public IActionResult GetAllPaymentDatas()
+        {
+            var orderSummaries = _dashboardRepository.GetAllPaymentData();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(new { List = orderSummaries, status = 1 });
         }
 
     }

@@ -170,18 +170,59 @@ namespace restaurant.Repository
                             cmd.ExecuteNonQuery();
                         }
                     }
-                    using (SqlCommand cmd = new SqlCommand("AddNotification", con, transaction))
+                    if (model.OrderType != "Dine-in")
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@OrderId", newUserId);
-                        cmd.Parameters.AddWithValue("@Description", "New Order is pending");
-                        cmd.Parameters.AddWithValue("@IsRead", 0);
-                        cmd.Parameters.AddWithValue("@DateTime", DateTime.Now);
-                        cmd.Parameters.AddWithValue("@RoleName", "Admin");
-                        cmd.Parameters.AddWithValue("@OrderType", model.OrderType);
-                        cmd.Parameters.AddWithValue("@Status", 0);
-                        cmd.ExecuteNonQuery();
+                        using (SqlCommand cmd = new SqlCommand("AddNotification", con, transaction))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@OrderId", newUserId);
+                            cmd.Parameters.AddWithValue("@Description", "New Order is pending");
+                            cmd.Parameters.AddWithValue("@IsRead", 0);
+                            cmd.Parameters.AddWithValue("@DateTime", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@RoleName", "Admin");
+                            cmd.Parameters.AddWithValue("@OrderType", model.OrderType);
+                            cmd.Parameters.AddWithValue("@Status", 0);
+                            cmd.ExecuteNonQuery();
+                        }
                     }
+                    if (model.OrderType == "Delivery" || model.OrderType == "Pick-Up")
+                    {
+                        using (SqlCommand cmd = new SqlCommand("AddPaymentDetails", con, transaction))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@OrderId", newUserId);
+                            cmd.Parameters.AddWithValue("@PaymentType", model.PaymentType);
+                            //if (model.PaymentType == "credit" || model.PaymentType == "debit")
+                            //{
+                                cmd.Parameters.AddWithValue("@CardNumber", model.CardNumber);
+                                cmd.Parameters.AddWithValue("@CardName", model.CardName);
+                                cmd.Parameters.AddWithValue("@ExpireDate", model.ExpireDate);
+                            //}else if (model.PaymentType == "upi")
+                            //{
+                                cmd.Parameters.AddWithValue("@UPIId", model.UPIId);
+                            //}
+                            //else if(model.PaymentType == "banking")
+                            //{
+                                cmd.Parameters.AddWithValue("@BankName", model.BankName);
+                            //}
+                            //else
+                            //{
+
+                            //}
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    if (model.OrderType == "Dine-in")
+                    {
+                        using (SqlCommand cmd = new SqlCommand("AssignChefsAndUpdateDetails", con, transaction))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@OrderId", newUserId);
+                            cmd.Parameters.AddWithValue("@OrderType", model.OrderType);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
 
                     transaction.Commit();
                 }
@@ -253,6 +294,7 @@ namespace restaurant.Repository
                             product.CategoriesName = reader["CategoriesName"].ToString();
                             product.Description = reader["Description"].ToString();
                             product.Currency = reader["Currency"].ToString();
+                            product.ChefName = reader["ChefName"] != DBNull.Value ? reader["ChefName"].ToString() : string.Empty;
                             product.Price = reader.GetInt32(reader.GetOrdinal("Price"));
                             product.Quantity = reader.GetInt32(reader.GetOrdinal("Quantity"));
 
@@ -405,6 +447,28 @@ namespace restaurant.Repository
                 }
             }
             return Status;
+        }
+        public string GetChefNameById(int id)
+        {
+            string chefName = "";
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetStatusUsers", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@GetChefNameById", id));
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        chefName = reader["ChefName"].ToString();
+                    }
+                }
+            }
+            return chefName;
         }
 
         public bool StoreSatausData(StoreSatausData model)
@@ -590,7 +654,7 @@ namespace restaurant.Repository
                     cmd.Parameters.AddWithValue("@RoleName", model.RoleName);
                     cmd.Parameters.AddWithValue("@Description", model.Description);
                     cmd.Parameters.AddWithValue("@Status", model.Status);
-                    cmd.Parameters.AddWithValue("@IsRead",0);
+                    cmd.Parameters.AddWithValue("@IsRead", 0);
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }
@@ -630,6 +694,121 @@ namespace restaurant.Repository
                 con.Close();
             }
             return true;
+        }
+        public void AssignChefsAndUpdateDetails(ModifyrelatableChef model)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("AssignChefsAndUpdateDetails", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Parameters
+                    cmd.Parameters.AddWithValue("@OrderId", model.orderId);
+                    cmd.Parameters.AddWithValue("@OrderType", model.orderType);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public bool DeleteCheckedRTecordsInNotifications(string ids)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("DeleteCheckedRTecordsInNotifications", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@Ids", ids);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return true;
+        }
+
+        public ICollection<Payment> GetPaymentAllData()
+        {
+            var PaymentList = new List<Payment>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetPaymentAllData", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Payment Items = new Payment
+                        {
+                            Id = reader["Id"] != DBNull.Value ? reader.GetInt32(reader.GetOrdinal("Id")) : 0,
+                            OrderID = reader["OrderID"] != DBNull.Value ? reader.GetInt32(reader.GetOrdinal("OrderID")) : 0,
+                            PaymentType = reader["PaymentType"] != DBNull.Value ? reader["PaymentType"].ToString() : string.Empty,
+                            UPIId = reader["UPIId"] != DBNull.Value ? reader["UPIId"].ToString() : string.Empty,
+                            CardNumber = reader["CardNumber"] != DBNull.Value ? reader["CardNumber"].ToString() : string.Empty,
+                            CardName = reader["CardName"] != DBNull.Value ? reader["CardName"].ToString() : string.Empty,
+                            ExpireDate = reader["ExpireDate"] != DBNull.Value ? reader["ExpireDate"].ToString() : string.Empty,
+                            BankName = reader["BankName"] != DBNull.Value ? reader["BankName"].ToString() : string.Empty
+                        };
+                        PaymentList.Add(Items);
+
+                    }
+                }
+            }
+            return PaymentList;
+        }
+
+        public bool UpdatePaymentType(PaymentUpdate model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdatePaymentType", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ID", model.Id);
+                    cmd.Parameters.AddWithValue("@PaymentType", model.PaymentType);
+                    cmd.Parameters.AddWithValue("@UPIId", model.UPIId);
+                    cmd.Parameters.AddWithValue("@CardNumber", model.CardNumber);
+                    cmd.Parameters.AddWithValue("@CardName", model.CardName);
+                    cmd.Parameters.AddWithValue("@ExpireDate", model.ExpireDate);
+                    cmd.Parameters.AddWithValue("@BankName", model.BankName);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return true;
+        }
+
+        public int GetTotalAmountByCartId(int cartId)
+        {
+            int totalAmount = 0;
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetTotalAmountByCartId", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CartId", cartId));
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        totalAmount = Convert.ToInt32(reader["TotalAmount"]);
+                    }
+                }
+            }
+            return totalAmount;
         }
     }
 }

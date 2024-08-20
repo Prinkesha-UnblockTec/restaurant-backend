@@ -2,6 +2,7 @@
 using restaurant.Models;
 using System.Data.SqlClient;
 using System.Data;
+using System.Reflection;
 
 namespace restaurant.Repository
 {
@@ -252,6 +253,65 @@ namespace restaurant.Repository
                 }
             }
             return TopSellingItems;
+        }
+
+        public ICollection<PaymentChartDatas> GetPaymentData(PaymentChartData model)
+        {
+            var PaymentItems = new List<PaymentChartDatas>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetPaymentSummaryByDateRange", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@StartDateString", model.StartDate);
+                cmd.Parameters.AddWithValue("@EndDateString", model.EndDate);
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        PaymentChartDatas items = new PaymentChartDatas
+                        {
+                            PaymentType = reader["PaymentType"] != DBNull.Value ? reader["PaymentType"].ToString() : string.Empty,
+                            Price = reader["TotalPrice"] != DBNull.Value ? Convert.ToInt32(reader["TotalPrice"]) : 0,
+                        };
+                        PaymentItems.Add(items);
+
+                    }
+                }
+            }
+            return PaymentItems;
+        }
+
+        public ICollection<PaymentChartDatas> GetAllPaymentData()
+        {
+            var PaymentItems = new List<PaymentChartDatas>();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("GetPaymentSummary", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        PaymentChartDatas items = new PaymentChartDatas
+                        {
+                            Date = reader["MonthYear"] != DBNull.Value ? reader["MonthYear"].ToString() : string.Empty,
+                            PaymentType = reader["PaymentType"] != DBNull.Value ? reader["PaymentType"].ToString() : string.Empty,
+                            Price = reader["TotalPrice"] != DBNull.Value ? Convert.ToInt32(reader["TotalPrice"]) : 0,
+                        };
+                        PaymentItems.Add(items);
+
+                    }
+                }
+            }
+            return PaymentItems;
         }
     }
 }

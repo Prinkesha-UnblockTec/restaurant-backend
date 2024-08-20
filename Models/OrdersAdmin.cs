@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public bool Checked { get; set; }
         public string? UserName { get; set; }
+        public string? ChefName { get; set; }
         public int Quantity { get; set; }
         public string? ImageURL { get; set; }
         public string? CategoriesName { get; set; }

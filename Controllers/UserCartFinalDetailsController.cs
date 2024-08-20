@@ -43,9 +43,9 @@ namespace restaurant.Controllers
             }
             return BadRequest("TaskList Already Exist");
         }
-              [HttpPost("GetItemDataBseOnUser")]
+        [HttpPost("GetItemDataBseOnUser")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemDataBseOnUser>))]
-        public IActionResult GetUserCartProductsByTableName([FromBody]  ItemDataBseOnUser user)
+        public IActionResult GetUserCartProductsByTableName([FromBody] ItemDataBseOnUser user)
         {
 
             if (user == null)
@@ -137,6 +137,7 @@ namespace restaurant.Controllers
             }
             return Ok(new { List = TaskList, status = 1 });
         }
+
         [Route("AddSatausData")]
         [HttpPost]
         [ProducesResponseType(204)]
@@ -198,7 +199,7 @@ namespace restaurant.Controllers
         {
             if (newList == null)
             {
-                return BadRequest(ModelState);  
+                return BadRequest(ModelState);
             }
 
             if (!ModelState.IsValid)
@@ -308,6 +309,109 @@ namespace restaurant.Controllers
             }
             return Ok(new { status = 1 });
         }
+        [Route("AssignChefsAndUpdateDetails")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult AllocateItemsToChefsAsync([FromBody] ModifyrelatableChef newList)
+        {
+            if (newList == null)
+            {
+                return BadRequest(ModelState);
+            }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var CreateList = _mapper.Map<ModifyrelatableChef>(newList);
+            _userCartFinalDetails.AssignChefsAndUpdateDetails(CreateList);
+
+            return Ok(new { Message = "Successfully Created", status = 1 });
+
+
+        }
+        [Route("GetChefNameById/{Id}")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(string))]
+        public IActionResult GetChefNameById(int Id)
+        {
+            if (Id == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var TaskList = _userCartFinalDetails.GetChefNameById(Id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(new { List = TaskList, status = 1 });
+        }
+        [Route("DeleteCheckedRTecordsInNotifications")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult DeleteCheckedRTecordsInNotifications([FromBody] string ids)
+        {
+            bool result = _userCartFinalDetails.DeleteCheckedRTecordsInNotifications(ids);
+            if (result)
+            {
+                return Ok(new { success = true, message = "Notifications deleted successfully." });
+            }
+            return BadRequest(new { success = false, message = "Failed to delete notifications." });
+        }
+        [Route("GetPaymentAllData")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Payment>))]
+        public IActionResult GetPaymentAllData()
+        {
+            var TaskList = _mapper.Map<List<Payment>>(_userCartFinalDetails.GetPaymentAllData());
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(new { List = TaskList, status = 1 });
+        }
+        [Route("UpdatePaymentType")]
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateChefItems([FromBody] PaymentUpdate List)
+        {
+            if (List == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var UpdateListData = _mapper.Map<PaymentUpdate>(List);
+            if (_userCartFinalDetails.UpdatePaymentType(UpdateListData))
+            {
+                return Ok(new { Message = "Successfully Updated", status = 1 });
+            }
+            return BadRequest("This Role Name is Already Exist");
+        }
+        [Route("GetTotalAmountByCartId/{CartId}")]
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(string))]
+        public IActionResult GetTotalAmountByCartId(int CartId)
+        {
+            if (CartId == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var TaskList = _userCartFinalDetails.GetTotalAmountByCartId(CartId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(new { List = TaskList, status = 1 });
+        }
     }
 }

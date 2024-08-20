@@ -30,6 +30,12 @@
             public string? DeliverName { get; set; }
             public string? Currency { get; set; }
             public string? Time { get; set; }
+            public string? PaymentType { get; set; }
+            public string? UPIId { get; set; }
+            public string? CardNumber { get; set; }
+            public string? CardName { get; set; }
+            public string? ExpireDate { get; set; }
+            public string? BankName { get; set; }
             public List<Products> Products { get; set; } = new List<Products>();
         }
     }

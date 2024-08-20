@@ -796,6 +796,26 @@
   },
   {
     "ContainingType": "restaurant.Controllers.DashboardController",
+    "Method": "GetAllPaymentDatas",
+    "RelativePath": "api/Dashboard/GetAllPaymentData",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.PaymentChartDatas, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.DashboardController",
     "Method": "GetDayWiseTotalAmount",
     "RelativePath": "api/Dashboard/GetDayWiseTotalAmount",
     "HttpMethod": "POST",
@@ -908,6 +928,37 @@
           "text/json"
         ],
         "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.DashboardController",
+    "Method": "PaymentChartDataCharts",
+    "RelativePath": "api/Dashboard/PaymentChartDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newList",
+        "Type": "restaurant.Models.PaymentChartData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
       }
     ]
   },
@@ -1910,6 +1961,68 @@
   },
   {
     "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "AllocateItemsToChefsAsync",
+    "RelativePath": "api/UserCartFinalDetails/AssignChefsAndUpdateDetails",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newList",
+        "Type": "restaurant.Models.ModifyrelatableChef",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "DeleteCheckedRTecordsInNotifications",
+    "RelativePath": "api/UserCartFinalDetails/DeleteCheckedRTecordsInNotifications",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ids",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
     "Method": "DeleteRole",
     "RelativePath": "api/UserCartFinalDetails/DeleteCompleteOrderforNotification/{Id}",
     "HttpMethod": "DELETE",
@@ -2084,6 +2197,32 @@
   },
   {
     "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "GetChefNameById",
+    "RelativePath": "api/UserCartFinalDetails/GetChefNameById/{Id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
     "Method": "GetUserCartProductsByTableName",
     "RelativePath": "api/UserCartFinalDetails/GetItemDataBseOnUser",
     "HttpMethod": "POST",
@@ -2176,6 +2315,26 @@
   },
   {
     "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "GetPaymentAllData",
+    "RelativePath": "api/UserCartFinalDetails/GetPaymentAllData",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[restaurant.Models.Payment, restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
     "Method": "GetStoreSatausData",
     "RelativePath": "api/UserCartFinalDetails/GetSatausDataByCartId/{Id}",
     "HttpMethod": "GET",
@@ -2210,6 +2369,32 @@
     "Parameters": [
       {
         "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "GetTotalAmountByCartId",
+    "RelativePath": "api/UserCartFinalDetails/GetTotalAmountByCartId/{CartId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "CartId",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -2268,6 +2453,37 @@
       {
         "Name": "ItemsList",
         "Type": "restaurant.Models.UpdateStatusUserCart",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "restaurant.Controllers.UserCartFinalDetailsController",
+    "Method": "UpdateChefItems",
+    "RelativePath": "api/UserCartFinalDetails/UpdatePaymentType",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "List",
+        "Type": "restaurant.Models.PaymentUpdate",
         "IsRequired": true
       }
     ],
