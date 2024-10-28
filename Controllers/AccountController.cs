@@ -48,7 +48,6 @@ namespace restaurant.Controllers
             //        Password = user.Password
             //    };
             //    var result = new JWTService(_configuration).GenerateToken(token);
-            //sample comment
         }
         [Route("Login")]
         [HttpPost]
